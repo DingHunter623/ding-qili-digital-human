@@ -32,6 +32,18 @@
     const brand=document.querySelector('.brand span'); if(brand) brand.textContent=SITE_TITLE;
     const panel=document.querySelector('.assistant-panel .panel-head'); if(panel) panel.textContent=PANEL_TITLE;
   }
+  function fixPaperFormatting(){
+    const article=document.querySelector('#standard-time'); if(!article) return;
+    const heads=Array.from(article.querySelectorAll('h3'));
+    const target=heads.find(h=>h.textContent.includes('标准工时的五类用途'));
+    if(!target||target.dataset.merged==='true') return;
+    const p1=target.nextElementSibling; const p2=p1&&p1.nextElementSibling;
+    if(p1&&p2&&p1.tagName==='P'&&p2.tagName==='P'&&p2.textContent.trim().startsWith('第四，用于ERP/MES基础数据')){
+      p1.innerHTML=p1.innerHTML.replace(/\s*$/,'')+' '+p2.innerHTML.replace(/^\s*/,'');
+      p2.remove();
+      target.dataset.merged='true';
+    }
+  }
   function copyText(text){
     if(navigator.clipboard&&window.isSecureContext) return navigator.clipboard.writeText(text);
     const input=document.createElement('input'); input.value=text; input.setAttribute('readonly',''); input.style.position='fixed'; input.style.left='-9999px';
@@ -71,6 +83,7 @@
 
   function makeDock(){
     applyBranding();
+    fixPaperFormatting();
     if(document.getElementById('floatDock')) return;
     const dock=document.createElement('div'); dock.className='float-dock'; dock.id='floatDock';
     dock.innerHTML=`
