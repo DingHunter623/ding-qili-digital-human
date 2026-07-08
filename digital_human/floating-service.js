@@ -22,12 +22,22 @@ function cleanText(s){
     .replace(/制造改善方法论与项目实践问答/g,PANEL_TITLE)
     .replace(/制造改善方法论与项目实践交流/g,'制造改善与项目实践交流')
     .replace(/制造改善方法论\s*\/\s*项目实践展示\s*\/\s*精益顾问交流入口/g,HERO_EYEBROW)
-    .replace(/返回AI数字人主页/g,'返回项目主页')
-    .replace(/返回 AI 数字人主页/g,'返回项目主页')
+    .replace(/返回AI数字人主页/g,'返回主页')
+    .replace(/返回 AI 数字人主页/g,'返回主页')
+    .replace(/返回项目主页/g,'返回主页')
     .replace(/丁启利\s*AI\s*数字人主页/g,SITE_TITLE)
     .replace(/丁启利\s*AI\s*数字人/g,SITE_TITLE)
     .replace(/丁启利职业能力\s*AI\s*数字人/g,'丁启利制造改善与项目实践交流助手')
     .replace(/AI辅助制造改善知识库\s*\/\s*职业能力展示页\s*\/\s*精益顾问数字名片/g,HERO_EYEBROW)
+    .replace(/制造改善实践论文合集/g,'制造改善文章合集')
+    .replace(/制造改善实践论文/g,'制造改善文章')
+    .replace(/实践论文/g,'方法文章')
+    .replace(/论文目录/g,'文章目录')
+    .replace(/论文合集/g,'文章合集')
+    .replace(/论文库/g,'文章库')
+    .replace(/方法论文章/g,'方法文章')
+    .replace(/查看方法文章/g,'查看文章')
+    .replace(/查看实践论文/g,'查看文章')
     .replace(/AI\s*数字人知识库/g,'制造改善知识库')
     .replace(/AI\s*数字人/g,'专业交流助手')
     .replace(/AI数字人/g,'专业交流助手')
@@ -36,7 +46,7 @@ function cleanText(s){
 }
 function cleanBodyText(){
   if(!document.body)return;
-  const terms=/数字人|制造改善方法论与项目实践|启动数字人问答|AI辅助制造改善知识库|精益顾问数字名片/;
+  const terms=/数字人|制造改善方法论与项目实践|启动数字人问答|AI辅助制造改善知识库|精益顾问数字名片|实践论文|论文目录|论文库|返回项目主页/;
   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||['SCRIPT','STYLE'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return terms.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});
   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>n.nodeValue=cleanText(n.nodeValue));
 }
