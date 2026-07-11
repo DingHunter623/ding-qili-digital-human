@@ -6,6 +6,7 @@
   document.head.appendChild(style);
   function load(src,id){if(document.getElementById(id))return;var s=document.createElement('script');s.id=id;s.src=src;document.body.appendChild(s);}
   function boot(){
+    load('terminology-v2.js?v=term2','terminologyV2Script');
     load('homepage-depth.js?v=depth3','homepageDepthScript');
     load('content-restore.js?v=restore-entries3','contentRestoreScript');
     load('career-resume-full.js?v=career-full1','careerResumeFullScript');
