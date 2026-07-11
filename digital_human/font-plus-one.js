@@ -11,6 +11,7 @@
     load('career-resume-full.js?v=career-full1','careerResumeFullScript');
     load('dialogue-knowledge-pro.js?v=dialogue-pro1','dialogueKnowledgeProScript');
     load('hero-veteran-tag.js?v=veteran1','heroVeteranTagScript');
+    load('wechat-qr-official.js?v=official-full1','wechatQrOfficialScript');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
