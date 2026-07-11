@@ -15,6 +15,7 @@
     load('dialogue-soul-v1.js?v=soul1','dialogueSoulV1Script');
     load('hero-veteran-tag.js?v=veteran1','heroVeteranTagScript');
     load('wechat-qr-official.js?v=official-full1','wechatQrOfficialScript');
+    load('public-copy-polish.js?v=public1','publicCopyPolishScript');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
