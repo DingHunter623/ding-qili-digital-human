@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+<title id="title">制造改善执行闭环</title><desc id="desc">目标、计划、标准、执行、检查、改善与知识沉淀形成持续循环</desc>
+<defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f4b5a"/><stop offset="1" stop-color="#178b94"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#082f39" flood-opacity=".24"/></filter></defs>
+<rect width="1000" height="1000" rx="42" fill="url(#bg)"/>
+<text x="70" y="90" fill="#ffe39b" font-size="34" font-weight="800">2026-07-14｜DAY007</text>
+<text x="70" y="175" fill="#fff" font-size="62" font-weight="900">改善不是“做完”</text>
+<text x="70" y="245" fill="#fff" font-size="62" font-weight="900">而是形成执行闭环</text>
+<text x="70" y="305" fill="#d8efeb" font-size="28">目标 → 计划 → 标准 → 执行 → 检查 → 改善 → 沉淀</text>
+<g transform="translate(500 610)" filter="url(#sh)">
+<circle r="220" fill="none" stroke="#ffe39b" stroke-width="18" stroke-dasharray="120 22"/>
+<circle r="130" fill="#fff"/>
+<text x="0" y="-12" text-anchor="middle" fill="#0f4b5a" font-size="44" font-weight="900">执行闭环</text>
+<text x="0" y="40" text-anchor="middle" fill="#178b94" font-size="26" font-weight="800">让改善可复制</text>
+</g>
+<g fill="#fff" font-size="28" font-weight="900" text-anchor="middle">
+<g transform="translate(500 355)"><circle r="58" fill="#caa15f"/><text y="10">目标</text></g>
+<g transform="translate(690 430)"><circle r="58" fill="#6e3f5f"/><text y="10">计划</text></g>
+<g transform="translate(760 620)"><circle r="58" fill="#177f87" stroke="#fff" stroke-width="4"/><text y="10">标准</text></g>
+<g transform="translate(670 800)"><circle r="58" fill="#caa15f"/><text y="10">执行</text></g>
+<g transform="translate(330 800)"><circle r="58" fill="#6e3f5f"/><text y="10">检查</text></g>
+<g transform="translate(240 620)"><circle r="58" fill="#177f87" stroke="#fff" stroke-width="4"/><text y="10">改善</text></g>
+<g transform="translate(310 430)"><circle r="64" fill="#caa15f"/><text y="-2">知识</text><text y="30">沉淀</text></g>
+</g>
+<path d="M770 830h155" stroke="#ffe39b" stroke-width="10" stroke-linecap="round"/><text x="925" y="840" text-anchor="end" fill="#fff" font-size="24" font-weight="800">每日工程版简报</text>
+</svg>
