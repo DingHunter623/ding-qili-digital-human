@@ -30,29 +30,12 @@ function json(body, status, origin) {
   });
 }
 
-function safeOpenAIError(data, status, requestId) {
-  const error = data && data.error ? data.error : {};
-  return {
-    error: 'AI service request failed',
-    upstream_status: status,
-    upstream_code: error.code || 'unknown',
-    upstream_type: error.type || 'unknown',
-    request_id: requestId || undefined
-  };
-}
-
-function todayUTC() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function clientId(request) {
-  return request.headers.get('CF-Connecting-IP') || 'unknown';
-}
+function todayUTC() { return new Date().toISOString().slice(0, 10); }
+function clientId(request) { return request.headers.get('CF-Connecting-IP') || 'unknown'; }
 
 async function readNumber(kv, key) {
   if (!kv) return 0;
-  const value = await kv.get(key);
-  return Number(value || 0);
+  return Number((await kv.get(key)) || 0);
 }
 
 async function increment(kv, key, ttl) {
@@ -74,36 +57,44 @@ async function recordMetric(env, name) {
 async function checkRateLimit(request, env) {
   const limit = Math.max(1, Number(env.DAILY_IP_LIMIT || 20));
   if (!env.QILY_STATS) return { allowed: true, used: 0, limit, storage: false };
-  const day = todayUTC();
-  const key = `limit:${day}:${clientId(request)}`;
+  const key = `limit:${todayUTC()}:${clientId(request)}`;
   const used = await readNumber(env.QILY_STATS, key);
   if (used >= limit) return { allowed: false, used, limit, storage: true };
-  const next = await increment(env.QILY_STATS, key, 60 * 60 * 48);
-  return { allowed: true, used: next, limit, storage: true };
+  return { allowed: true, used: await increment(env.QILY_STATS, key, 60 * 60 * 48), limit, storage: true };
 }
 
 function isAdmin(request, env) {
-  const supplied = request.headers.get('Authorization') || '';
-  return Boolean(env.ADMIN_TOKEN) && supplied === `Bearer ${env.ADMIN_TOKEN}`;
+  return Boolean(env.ADMIN_TOKEN) && (request.headers.get('Authorization') || '') === `Bearer ${env.ADMIN_TOKEN}`;
+}
+
+function providerConfig(env) {
+  const requested = String(env.AI_PROVIDER || '').toLowerCase();
+  if (requested === 'openai') return { provider: 'openai', model: env.OPENAI_MODEL || 'gpt-5-mini', configured: Boolean(env.OPENAI_API_KEY) };
+  if (requested === 'qwen' || requested === 'dashscope') return { provider: 'qwen', model: env.QWEN_MODEL || 'qwen-plus', configured: Boolean(env.DASHSCOPE_API_KEY) };
+  if (env.DASHSCOPE_API_KEY) return { provider: 'qwen', model: env.QWEN_MODEL || 'qwen-plus', configured: true };
+  return { provider: 'openai', model: env.OPENAI_MODEL || 'gpt-5-mini', configured: Boolean(env.OPENAI_API_KEY) };
 }
 
 async function adminStatus(env) {
   const day = todayUTC();
   const names = ['requests', 'success', 'errors', 'rate_limited'];
-  const today = {};
-  const all = {};
+  const today = {}, all = {};
   for (const name of names) {
     today[name] = await readNumber(env.QILY_STATS, `metric:${day}:${name}`);
     all[name] = await readNumber(env.QILY_STATS, `metric:all:${name}`);
   }
+  const active = providerConfig(env);
   return {
     ok: true,
     service: 'QilyLean AI',
     date_utc: day,
-    model: env.OPENAI_MODEL || 'gpt-5-mini',
+    provider: active.provider,
+    model: active.model,
+    active_provider_configured: active.configured,
+    openai_key_configured: Boolean(env.OPENAI_API_KEY),
+    qwen_key_configured: Boolean(env.DASHSCOPE_API_KEY),
     max_output_tokens: Number(env.MAX_OUTPUT_TOKENS || 1400),
     daily_ip_limit: Number(env.DAILY_IP_LIMIT || 20),
-    openai_key_configured: Boolean(env.OPENAI_API_KEY),
     admin_token_configured: Boolean(env.ADMIN_TOKEN),
     statistics_storage: env.QILY_STATS ? 'enabled' : 'not_bound',
     today,
@@ -111,19 +102,87 @@ async function adminStatus(env) {
   };
 }
 
+function safeUpstreamError(provider, data, status, requestId) {
+  const error = data && data.error ? data.error : {};
+  return {
+    error: 'AI service request failed',
+    provider,
+    upstream_status: status,
+    upstream_code: error.code || data.code || 'unknown',
+    upstream_type: error.type || 'unknown',
+    request_id: requestId || undefined
+  };
+}
+
+async function callOpenAI(message, previousResponseId, env, signal) {
+  const body = {
+    model: env.OPENAI_MODEL || 'gpt-5-mini',
+    instructions: SYSTEM_INSTRUCTIONS,
+    input: message,
+    max_output_tokens: Number(env.MAX_OUTPUT_TOKENS || 1400)
+  };
+  if (previousResponseId) body.previous_response_id = previousResponseId;
+  const response = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body), signal
+  });
+  const data = await response.json();
+  const requestId = response.headers.get('x-request-id') || '';
+  if (!response.ok) throw { provider: 'openai', status: response.status, data, requestId };
+  return {
+    answer: data.output_text || extractText(data.output) || '暂未生成有效回答。',
+    response_id: data.id,
+    usage: data.usage,
+    provider: 'openai',
+    model: body.model
+  };
+}
+
+async function callQwen(message, env, signal) {
+  const model = env.QWEN_MODEL || 'qwen-plus';
+  const response = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${env.DASHSCOPE_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: 'system', content: SYSTEM_INSTRUCTIONS },
+        { role: 'user', content: message }
+      ],
+      max_tokens: Number(env.MAX_OUTPUT_TOKENS || 1400),
+      temperature: 0.35
+    }),
+    signal
+  });
+  const data = await response.json();
+  const requestId = response.headers.get('x-request-id') || data.request_id || '';
+  if (!response.ok) throw { provider: 'qwen', status: response.status, data, requestId };
+  return {
+    answer: data.choices?.[0]?.message?.content || '暂未生成有效回答。',
+    response_id: null,
+    usage: data.usage,
+    provider: 'qwen',
+    model
+  };
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
     const url = new URL(request.url);
-
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
 
     if (request.method === 'GET' && url.pathname === '/health') {
+      const active = providerConfig(env);
       return json({
         ok: true,
         service: 'QilyLean AI',
-        key_configured: Boolean(env.OPENAI_API_KEY),
-        model: env.OPENAI_MODEL || 'gpt-5-mini',
+        provider: active.provider,
+        model: active.model,
+        key_configured: active.configured,
+        openai_available: Boolean(env.OPENAI_API_KEY),
+        qwen_available: Boolean(env.DASHSCOPE_API_KEY),
         statistics: env.QILY_STATS ? 'enabled' : 'not_bound'
       }, 200, origin);
     }
@@ -133,11 +192,11 @@ export default {
       return json(await adminStatus(env), 200, origin);
     }
 
-    if (request.method !== 'POST' || url.pathname !== '/chat') {
-      return json({ error: 'Not found' }, 404, origin);
-    }
+    if (request.method !== 'POST' || url.pathname !== '/chat') return json({ error: 'Not found' }, 404, origin);
     if (!ALLOWED_ORIGINS.has(origin)) return json({ error: 'Origin not allowed' }, 403, origin);
-    if (!env.OPENAI_API_KEY) return json({ error: 'AI service is not configured', diagnostic: 'missing_openai_api_key' }, 503, origin);
+
+    const active = providerConfig(env);
+    if (!active.configured) return json({ error: 'AI service is not configured', diagnostic: `missing_${active.provider}_api_key` }, 503, origin);
 
     const rate = await checkRateLimit(request, env);
     if (!rate.allowed) {
@@ -159,51 +218,19 @@ export default {
     if (message.length > 3000) return json({ error: 'Message is too long' }, 413, origin);
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
+    const timeout = setTimeout(() => controller.abort(), 45000);
     try {
-      const body = {
-        model: env.OPENAI_MODEL || 'gpt-5-mini',
-        instructions: SYSTEM_INSTRUCTIONS,
-        input: message,
-        max_output_tokens: Number(env.MAX_OUTPUT_TOKENS || 1400)
-      };
-      if (previousResponseId) body.previous_response_id = previousResponseId;
-
-      const upstream = await fetch('https://api.openai.com/v1/responses', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body),
-        signal: controller.signal
-      });
-
-      const data = await upstream.json();
-      const requestId = upstream.headers.get('x-request-id') || '';
-      if (!upstream.ok) {
-        await recordMetric(env, 'errors');
-        const error = data && data.error ? data.error : {};
-        console.error('OpenAI error', JSON.stringify({
-          status: upstream.status,
-          code: error.code || 'unknown',
-          type: error.type || 'unknown',
-          message: String(error.message || '').slice(0, 300),
-          request_id: requestId
-        }));
-        return json(safeOpenAIError(data, upstream.status, requestId), 502, origin);
-      }
-
+      const result = active.provider === 'qwen'
+        ? await callQwen(message, env, controller.signal)
+        : await callOpenAI(message, previousResponseId, env, controller.signal);
       await recordMetric(env, 'success');
-      const answer = data.output_text || extractText(data.output) || '暂未生成有效回答。';
-      return json({
-        answer,
-        response_id: data.id,
-        usage: data.usage || undefined,
-        rate_limit: { used: rate.used, limit: rate.limit }
-      }, 200, origin);
+      return json({ ...result, rate_limit: { used: rate.used, limit: rate.limit } }, 200, origin);
     } catch (error) {
       await recordMetric(env, 'errors');
+      if (error && typeof error.status === 'number') {
+        console.error(`${error.provider} error`, JSON.stringify({ status: error.status, request_id: error.requestId || '' }));
+        return json(safeUpstreamError(error.provider, error.data, error.status, error.requestId), 502, origin);
+      }
       const msg = error && error.name === 'AbortError' ? 'AI request timed out' : 'AI service unavailable';
       return json({ error: msg, diagnostic: error && error.name ? error.name : 'unknown' }, 504, origin);
     } finally {
@@ -217,9 +244,7 @@ function extractText(output) {
   const parts = [];
   for (const item of output) {
     if (!Array.isArray(item.content)) continue;
-    for (const c of item.content) {
-      if (typeof c.text === 'string') parts.push(c.text);
-    }
+    for (const c of item.content) if (typeof c.text === 'string') parts.push(c.text);
   }
   return parts.join('\n').trim();
 }
