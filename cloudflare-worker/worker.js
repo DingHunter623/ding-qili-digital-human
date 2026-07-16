@@ -30,6 +30,17 @@ function json(body, status, origin) {
   });
 }
 
+function safeOpenAIError(data, status, requestId) {
+  const error = data && data.error ? data.error : {};
+  return {
+    error: 'AI service request failed',
+    upstream_status: status,
+    upstream_code: error.code || 'unknown',
+    upstream_type: error.type || 'unknown',
+    request_id: requestId || undefined
+  };
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
@@ -37,7 +48,7 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(origin) });
     if (request.method === 'GET' && url.pathname === '/health') {
-      return json({ ok: true, service: 'QilyLean AI' }, 200, origin);
+      return json({ ok: true, service: 'QilyLean AI', key_configured: Boolean(env.OPENAI_API_KEY) }, 200, origin);
     }
     if (request.method !== 'POST' || url.pathname !== '/chat') {
       return json({ error: 'Not found' }, 404, origin);
@@ -46,7 +57,7 @@ export default {
       return json({ error: 'Origin not allowed' }, 403, origin);
     }
     if (!env.OPENAI_API_KEY) {
-      return json({ error: 'AI service is not configured' }, 503, origin);
+      return json({ error: 'AI service is not configured', diagnostic: 'missing_openai_api_key' }, 503, origin);
     }
 
     let payload;
@@ -80,16 +91,24 @@ export default {
       });
 
       const data = await upstream.json();
+      const requestId = upstream.headers.get('x-request-id') || '';
       if (!upstream.ok) {
-        console.error('OpenAI error', upstream.status, data?.error?.code || 'unknown');
-        return json({ error: 'AI service request failed' }, 502, origin);
+        const error = data && data.error ? data.error : {};
+        console.error('OpenAI error', JSON.stringify({
+          status: upstream.status,
+          code: error.code || 'unknown',
+          type: error.type || 'unknown',
+          message: String(error.message || '').slice(0, 300),
+          request_id: requestId
+        }));
+        return json(safeOpenAIError(data, upstream.status, requestId), 502, origin);
       }
 
       const answer = data.output_text || extractText(data.output) || '暂未生成有效回答。';
       return json({ answer, response_id: data.id }, 200, origin);
     } catch (error) {
       const msg = error && error.name === 'AbortError' ? 'AI request timed out' : 'AI service unavailable';
-      return json({ error: msg }, 504, origin);
+      return json({ error: msg, diagnostic: error && error.name ? error.name : 'unknown' }, 504, origin);
     } finally {
       clearTimeout(timeout);
     }
