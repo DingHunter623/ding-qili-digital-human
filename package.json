@@ -1,0 +1,10 @@
+{
+  "name": "qilylean",
+  "private": true,
+  "scripts": {
+    "deploy:worker": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
