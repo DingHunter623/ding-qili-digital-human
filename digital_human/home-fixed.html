@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3faf9}#homeFrame{display:block;width:100%;height:100%;border:0;background:#f3faf9}</style>
 </head>
 <body>
-  <iframe id="homeFrame" src="home.html?build=20260717-qrfix2" title="QilyLean 制造改善与项目实践主页"></iframe>
+  <iframe id="homeFrame" src="home.html?build=20260718-project-images" title="QilyLean 制造改善与项目实践主页"></iframe>
   <script>
   (function(){
     var frame=document.getElementById('homeFrame');
@@ -17,10 +17,16 @@
         var doc=frame.contentDocument;
         if(!doc)return;
         if(!doc.getElementById('qilyShareQrFixScript')){
-          var script=doc.createElement('script');
-          script.id='qilyShareQrFixScript';
-          script.src='/digital_human/share-qr-fix.js?v=20260717-qrfix2';
-          doc.body.appendChild(script);
+          var shareScript=doc.createElement('script');
+          shareScript.id='qilyShareQrFixScript';
+          shareScript.src='/digital_human/share-qr-fix.js?v=20260717-qrfix2';
+          doc.body.appendChild(shareScript);
+        }
+        if(!doc.getElementById('qilyProjectImagesV2Script')){
+          var projectScript=doc.createElement('script');
+          projectScript.id='qilyProjectImagesV2Script';
+          projectScript.src='/digital_human/project-images-v2.js?v=20260718-1';
+          doc.body.appendChild(projectScript);
         }
         if(location.hash)frame.contentWindow.location.hash=location.hash;
       }catch(error){console.error(error);}
