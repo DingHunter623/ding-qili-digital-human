@@ -19,4 +19,5 @@ meta('name','twitter:card','summary');
 meta('name','twitter:title',title);
 meta('name','twitter:description',desc);
 meta('name','theme-color','#0f4b5a');
+if(/(?:home|home-live)\.html$|digital_human\/?$/i.test(location.pathname)&&!document.getElementById('moldWarehouseVideoScript')){var s=document.createElement('script');s.id='moldWarehouseVideoScript';s.src='project-mold-video.js?v=20260718';document.body.appendChild(s);}
 })();
