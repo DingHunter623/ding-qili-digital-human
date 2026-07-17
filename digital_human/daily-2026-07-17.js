@@ -1,6 +1,8 @@
 (function(){
 'use strict';
 
+function loadNextDaily(){if(document.getElementById('daily20260718Script'))return;var s=document.createElement('script');s.id='daily20260718Script';s.src='daily-2026-07-18.js?v=1';document.body.appendChild(s);}
+
 function patchFuseProject(){
   if(!/(?:home|home-live)\.html$/i.test(location.pathname))return;
   var gallery=document.getElementById('fuseCuttingProjectImages');
@@ -17,8 +19,20 @@ function patchFuseProject(){
   if(caption)caption.textContent='玻璃管保险丝切口断裂率改善｜改善后成品与半成品实物';
 }
 
+function reserveMoldProjectVideo(){
+  if(!/(?:home|home-live)\.html$/i.test(location.pathname)||document.getElementById('moldProjectVideoPlaceholder'))return;
+  var figure=document.getElementById('moldWarehouseProjectImage');
+  if(!figure){setTimeout(reserveMoldProjectVideo,160);return;}
+  var box=document.createElement('div');box.id='moldProjectVideoPlaceholder';box.setAttribute('aria-label','项目视频预留模块');
+  box.innerHTML='<div style="display:flex;align-items:center;gap:14px;padding:18px 20px;margin:0 0 18px;border:1px dashed #7eaaa9;border-radius:14px;background:#f4f9f8;color:#174f59"><span style="display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#176b77;color:#fff;font-size:21px">▶</span><div><strong style="display:block;font-size:17px">项目现场视频</strong><span style="display:block;margin-top:4px;color:#62797d;font-size:14px">视频模块已预留，后续上传现场视频后直接启用。</span></div></div>';
+  figure.insertAdjacentElement('afterend',box);
+}
+
+loadNextDaily();
+
 if(/(?:home|home-live)\.html$/i.test(location.pathname)){
   patchFuseProject();
+  reserveMoldProjectVideo();
   return;
 }
 
