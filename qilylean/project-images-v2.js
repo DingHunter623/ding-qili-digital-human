@@ -30,6 +30,23 @@ function addMold(){
   card.insertBefore(f,card.firstChild);
 }
 function addDigitalFactory(){
+  function addFactoryLayout(){
+  var card=findProject(['新工厂/新产线','Factory Layout、精益物流与扩展边界规划']);
+  if(!card)return;
+
+  var old=card.querySelector('#factoryLayoutProjectImageV2');
+  if(old)old.remove();
+
+  var f=document.createElement('figure');
+  f.id='factoryLayoutProjectImageV2';
+  f.className='project-media-v2';
+
+  f.innerHTML=
+  '<img src="/Factory Layout.png?v=20260718" alt="Factory Layout新工厂新产线设计规划">'+
+  '<figcaption>Factory Layout、精益物流与扩展边界规划｜新工厂设计从“画图”升级为“制造系统设计”</figcaption>';
+
+  card.insertBefore(f,card.firstChild);
+}
   var card=findProject(['ERP/MES/APS协同与IE基础数据治理','数智化工厂｜数据地基']);
   if(!card)return;
   var old=card.querySelector('#digitalFactoryProjectImageV2');if(old)old.remove();
@@ -37,7 +54,7 @@ function addDigitalFactory(){
   f.innerHTML='<img src="https://raw.githubusercontent.com/DingHunter623/QilyLean/main/shuzhihua.png?raw=1&v=20260718-6" alt="数智化工厂数据地基与制造运营协同"><figcaption>数智化工厂｜数据地基：ERP、MES、APS与IE基础数据协同</figcaption>';
   card.insertBefore(f,card.firstChild);
 }
-function run(){addStyle();addFuse();addMold();addDigitalFactory();}
+function run(){addStyle();addFuse();addMold();addDigitalFactory();addFactoryLayout();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 setTimeout(run,300);
 })();
