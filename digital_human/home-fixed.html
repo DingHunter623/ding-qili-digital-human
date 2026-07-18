@@ -8,7 +8,7 @@
   <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3faf9}#homeFrame{display:block;width:100%;height:100%;border:0;background:#f3faf9}</style>
 </head>
 <body>
-  <iframe id="homeFrame" src="home.html?build=20260718-digital-factory-image-fix2" title="QilyLean 制造改善与项目实践主页"></iframe>
+  <iframe id="homeFrame" src="home.html?build=20260718-mold-video-v2" title="QilyLean 制造改善与项目实践主页"></iframe>
   <script>
   (function(){
     var frame=document.getElementById('homeFrame');
@@ -27,6 +27,14 @@
           projectScript.id='qilyProjectImagesV2Script';
           projectScript.src='/digital_human/project-images-v2.js?v=20260718-6';
           doc.body.appendChild(projectScript);
+        }
+        var oldVideoScript=doc.getElementById('projectMoldVideoScript');
+        if(oldVideoScript)oldVideoScript.remove();
+        if(!doc.getElementById('qilyMoldVideoV2Script')){
+          var videoScript=doc.createElement('script');
+          videoScript.id='qilyMoldVideoV2Script';
+          videoScript.src='/digital_human/project-mold-video.js?v=20260718-v2';
+          doc.body.appendChild(videoScript);
         }
         if(location.hash)frame.contentWindow.location.hash=location.hash;
       }catch(error){console.error(error);}
