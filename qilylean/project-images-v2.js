@@ -46,7 +46,7 @@ function addFactoryLayout(){
   f.id='factoryLayoutProjectImageV2';
   f.className='project-media-v2';
   f.innerHTML=
-  '<img src="/Factory Layout.png?v=20260718" alt="Factory Layout新工厂新产线设计规划">'+
+  <img src="/qilylean/factory-layout.png?v=20260718" alt="Factory Layout新工厂新产线设计规划">'+
   '<figcaption>Factory Layout、精益物流与扩展边界规划｜新工厂设计从“画图”升级为“制造系统设计”</figcaption>';
   card.insertBefore(f,card.firstChild);
 }
