@@ -29,24 +29,6 @@ function addMold(){
   f.innerHTML='<div class="mold-gallery-v2"><div class="mold-main-v2"><img src="/%E7%AB%8B%E4%BD%93%E5%BA%93%E9%9B%8F%E5%BD%A2.png?v=20260718-4" alt="模具智能立体库现场"><span>现场实景</span></div><div><img src="/mold-warehouse-layout.jpg?v=20260718-4" alt="模具智能立体库布局规划"><span>Layout规划</span></div><div><img src="/%E6%99%BA%E8%83%BD%E7%AB%8B%E4%BD%93%E5%BA%93%E7%B3%BB%E7%BB%9F.jpg?v=20260718-4" alt="智能存取立体货仓系统界面"><span>系统界面</span></div></div><figcaption>智能模具库｜库位与追溯管理｜1200+副模具立体库：现场、Layout规划与智能存取系统</figcaption>';
   card.insertBefore(f,card.firstChild);
 }
-function addDigitalFactory(){
-  function addFactoryLayout(){
-  var card=findProject(['新工厂/新产线','Factory Layout、精益物流与扩展边界规划']);
-  if(!card)return;
-
-  var old=card.querySelector('#factoryLayoutProjectImageV2');
-  if(old)old.remove();
-
-  var f=document.createElement('figure');
-  f.id='factoryLayoutProjectImageV2';
-  f.className='project-media-v2';
-
-  f.innerHTML=
-  '<img src="/Factory Layout.png?v=20260718" alt="Factory Layout新工厂新产线设计规划">'+
-  '<figcaption>Factory Layout、精益物流与扩展边界规划｜新工厂设计从“画图”升级为“制造系统设计”</figcaption>';
-
-  card.insertBefore(f,card.firstChild);
-}
   var card=findProject(['ERP/MES/APS协同与IE基础数据治理','数智化工厂｜数据地基']);
   if(!card)return;
   var old=card.querySelector('#digitalFactoryProjectImageV2');if(old)old.remove();
@@ -55,6 +37,19 @@ function addDigitalFactory(){
   card.insertBefore(f,card.firstChild);
 }
 function run(){addStyle();addFuse();addMold();addDigitalFactory();addFactoryLayout();}
+function addFactoryLayout(){
+  var card=findProject(['新工厂/新产线','Factory Layout、精益物流与扩展边界规划']);
+  if(!card)return;
+  var old=card.querySelector('#factoryLayoutProjectImageV2');
+  if(old)old.remove();
+  var f=document.createElement('figure');
+  f.id='factoryLayoutProjectImageV2';
+  f.className='project-media-v2';
+  f.innerHTML=
+  '<img src="/Factory Layout.png?v=20260718" alt="Factory Layout新工厂新产线设计规划">'+
+  '<figcaption>Factory Layout、精益物流与扩展边界规划｜新工厂设计从“画图”升级为“制造系统设计”</figcaption>';
+  card.insertBefore(f,card.firstChild);
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 setTimeout(run,300);
 })();
