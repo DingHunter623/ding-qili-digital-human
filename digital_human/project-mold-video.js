@@ -12,7 +12,7 @@ function mount(){
   var box=document.createElement('section');
   box.id='moldWarehouseProjectVideo';
   box.className='project-video';
-  box.innerHTML='<h4>项目现场视频｜智能模具库运行实录</h4><video controls preload="metadata" playsinline poster="/mold-smart-warehouse.png?v=20260718"><source src="/zhinengmujuku.mp4?v=20260718-4" type="video/mp4">您的浏览器暂不支持视频播放。</video><p>1200+副模具立体库｜库位管理、存取运行与数字化追溯现场记录</p>';
+  box.innerHTML='<h4>项目现场视频｜智能模具库运行实录</h4><video controls preload="metadata" playsinline poster="/mold-smart-warehouse.png?v=20260718"><source src="/zhinengmujuku_qilylean_v2.mp4?v=20260718-v2" type="video/mp4">您的浏览器暂不支持视频播放。</video><p>1200+副模具立体库｜库位管理、存取运行与数字化追溯现场记录</p>';
   var media=document.getElementById('moldWarehouseProjectImage');
   if(media&&media.parentNode===card)media.insertAdjacentElement('afterend',box);else card.insertBefore(box,card.firstChild);
 }
