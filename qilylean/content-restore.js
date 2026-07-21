@@ -9,7 +9,9 @@
   ];
   const REFERENCE_CARDS=[
     ['参考资料','SMED汽车座椅开关注塑件快速换模程序文件','围绕计划冻结、外部准备、停机换模、首件确认、品质放行与复盘固化，呈现汽车座椅开关注塑件快速换模的标准化实施路径。','/knowledge/smed-injection-mold-change.html','/qilylean/reference-materials.html?build=20260721-hd-v1'],
-    ['参考资料','汽车座椅开关总成组装单件流程序文件','围绕计划拉动、节拍平衡、标准在制、FIFO流动、质量内建与异常响应，呈现汽车座椅开关总成组装单件流的标准化实施路径。','/knowledge/seat-switch-one-piece-flow.html','/qilylean/reference-one-piece-flow.html?build=20260721-hd-v1']
+    ['参考资料','汽车座椅开关总成组装单件流程序文件','围绕计划拉动、节拍平衡、标准在制、FIFO流动、质量内建与异常响应，呈现汽车座椅开关总成组装单件流的标准化实施路径。','/knowledge/seat-switch-one-piece-flow.html','/qilylean/reference-one-piece-flow.html?build=20260721-hd-v1'],
+    ['参考资料','客户验厂常查程序文件清单与审核重点','围绕体系文件、生产控制、质量保证、供应链、EHS、人事及数据管理，梳理客户验厂高频审核点、常见不符合与证据链准备方法。','/knowledge/customer-audit-document-control.html','/qilylean/reference-audit-documents.html?build=20260722-hd-v2'],
+    ['参考资料','IATF16949六大核心工具简介及官方原著链接','系统说明APQP、Control Plan、FMEA、MSA、SPC、PPAP的职责分工与逻辑链，面向汽车电子NPI、量产策划与质量体系培训。','/knowledge/iatf16949-core-tools.html','/qilylean/reference-iatf16949-core-tools.html?build=20260722-hd-v2']
   ];
   const KNOW=[
     ['lean-01','微博精选 01','精益理念与现场改善思考','围绕精益生产理念、Gemba现地现物、问题意识、改善文化和管理机制的公开分享，适合用于现场管理认知对齐与个人知识沉淀。',['Lean Thinking','Gemba','PDCA'],'https://weibo.com/3193549852/5314903351231023'],
@@ -34,7 +36,7 @@
     const sec=document.getElementById('papers')||document.getElementById('paper-list');
     if(!sec)return;
     const head=sec.querySelector('.head,.section-head');
-    if(head)head.innerHTML='<h2>改善经验</h2><p>围绕VSM、标准工时、SMED、ERP/MES、IE数据底座、目视化管理和单件流等主题，持续沉淀制造改善方法与标准化参考资料。</p>';
+    if(head)head.innerHTML='<h2>改善经验</h2><p>围绕VSM、标准工时、SMED、ERP/MES、IE数据底座、目视化管理、单件流、客户验厂与IATF16949核心工具等主题，持续沉淀制造改善方法与标准化参考资料。</p>';
     const grid=sec.querySelector('.paper-grid,.grid-3,.grid-4');
     if(grid){grid.classList.remove('grid-4');grid.classList.add('grid-3');grid.innerHTML=PAPER_CARDS.map(paperCard).join('')+REFERENCE_CARDS.map(referenceCard).join('');}
   }
