@@ -8,8 +8,8 @@
     ['06','目视化不是贴标识，而是现场管理语言的统一','从6S标识、看板、通道、安全警示、库位和工位管理，说明目视化如何成为现场协同语言。',['目视化','6S','现场管理'],'papers.html#visual']
   ];
   const REFERENCE_CARDS=[
-    ['参考资料','SMED汽车座椅开关注塑件快速换模程序文件','围绕计划冻结、外部准备、停机换模、首件确认、品质放行与复盘固化，呈现汽车座椅开关注塑件快速换模的标准化实施路径。','/qilylean/reference-materials.html?build=20260721-hd-v1'],
-    ['参考资料','汽车座椅开关总成组装单件流程序文件','围绕计划拉动、节拍平衡、标准在制、FIFO流动、质量内建与异常响应，呈现汽车座椅开关总成组装单件流的标准化实施路径。','/qilylean/reference-one-piece-flow.html?build=20260721-hd-v1']
+    ['参考资料','SMED汽车座椅开关注塑件快速换模程序文件','围绕计划冻结、外部准备、停机换模、首件确认、品质放行与复盘固化，呈现汽车座椅开关注塑件快速换模的标准化实施路径。','/knowledge/smed-injection-mold-change.html','/qilylean/reference-materials.html?build=20260721-hd-v1'],
+    ['参考资料','汽车座椅开关总成组装单件流程序文件','围绕计划拉动、节拍平衡、标准在制、FIFO流动、质量内建与异常响应，呈现汽车座椅开关总成组装单件流的标准化实施路径。','/knowledge/seat-switch-one-piece-flow.html','/qilylean/reference-one-piece-flow.html?build=20260721-hd-v1']
   ];
   const KNOW=[
     ['lean-01','微博精选 01','精益理念与现场改善思考','围绕精益生产理念、Gemba现地现物、问题意识、改善文化和管理机制的公开分享，适合用于现场管理认知对齐与个人知识沉淀。',['Lean Thinking','Gemba','PDCA'],'https://weibo.com/3193549852/5314903351231023'],
@@ -29,12 +29,12 @@
   }
   function buttonText(){return '查看详情';}
   function paperCard(c){return `<article class="paper-card"><small>${c[0]}</small><h3>${c[1]}</h3><p>${c[2]}</p><div class="tags">${c[3].map(t=>`<span class="tag">${t}</span>`).join('')}</div><a class="button" href="${c[4]}">${buttonText()}</a></article>`;}
-  function referenceCard(c){return `<article class="paper-card"><small>${c[0]}</small><h3>${c[1]}</h3><p>${c[2]}</p><a class="button" href="${c[3]}" target="_top" rel="noopener">在线预览</a></article>`;}
+  function referenceCard(c){return `<article class="paper-card"><small>${c[0]}</small><h3>${c[1]}</h3><p>${c[2]}</p><div class="knowledge-actions"><a class="button" href="${c[3]}" target="_top">方法解读</a><a class="button secondary" href="${c[4]}" target="_top" rel="noopener">在线预览</a></div></article>`;}
   function restorePapers(){
     const sec=document.getElementById('papers')||document.getElementById('paper-list');
     if(!sec)return;
     const head=sec.querySelector('.head,.section-head');
-    if(head)head.innerHTML='<h2>改善经验</h2><p>恢复原有六篇经验文章入口，按VSM、标准工时、SMED、ERP/MES、IE数据底座和目视化语言六个方向沉淀制造改善方法，并扩展现场标准化参考资料。</p>';
+    if(head)head.innerHTML='<h2>改善经验</h2><p>围绕VSM、标准工时、SMED、ERP/MES、IE数据底座、目视化管理和单件流等主题，持续沉淀制造改善方法与标准化参考资料。</p>';
     const grid=sec.querySelector('.paper-grid,.grid-3,.grid-4');
     if(grid){grid.classList.remove('grid-4');grid.classList.add('grid-3');grid.innerHTML=PAPER_CARDS.map(paperCard).join('')+REFERENCE_CARDS.map(referenceCard).join('');}
   }

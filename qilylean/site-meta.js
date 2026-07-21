@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 var ORIGIN='https://qilylean.com';
-var map={'home.html':'/','daily-insights.html':'/daily-insights.html','papers.html':'/papers.html','lean-tools.html':'/tools.html','lean-knowledge.html':'/knowledge.html','execution-loop.html':'/execution.html','gbt2828.html':'/gbt2828.html'};
+var map={'home.html':'/','daily-insights.html':'/qilylean/daily-insights.html','papers.html':'/qilylean/papers.html','lean-tools.html':'/qilylean/lean-tools.html','lean-knowledge.html':'/qilylean/lean-knowledge.html','execution-loop.html':'/qilylean/execution-loop.html','gbt2828.html':'/qilylean/gbt2828.html'};
 var name=(location.pathname.split('/').pop()||'home.html').toLowerCase();
 var canonical=ORIGIN+(map[name]||('/'+name));
 function meta(attr,key,value){var q='meta['+attr+'="'+key+'"]',el=document.head.querySelector(q);if(!el){el=document.createElement('meta');el.setAttribute(attr,key);document.head.appendChild(el);}el.setAttribute('content',value);}

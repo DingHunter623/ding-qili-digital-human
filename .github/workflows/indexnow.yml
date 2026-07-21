@@ -1,0 +1,69 @@
+name: Notify search engines with IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.html"
+      - "sitemap.xml"
+      - "robots.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-main
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      SITE_HOST: qilylean.com
+      SITE_ORIGIN: https://qilylean.com
+      INDEXNOW_KEY: b47ed759da519bd90586a7877122d7be
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for the published key
+        shell: bash
+        run: |
+          for attempt in {1..30}; do
+            body="$(curl --fail --silent --show-error "$SITE_ORIGIN/$INDEXNOW_KEY.txt?deploy=$GITHUB_SHA-$attempt" || true)"
+            if [ "$body" = "$INDEXNOW_KEY" ]; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "The published IndexNow key was not available in time."
+          exit 1
+
+      - name: Submit canonical sitemap URLs
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          import xml.etree.ElementTree as ET
+
+          namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+          root = ET.parse("sitemap.xml").getroot()
+          urls = [node.text for node in root.findall("sm:url/sm:loc", namespace) if node.text]
+          payload = json.dumps({
+              "host": os.environ["SITE_HOST"],
+              "key": os.environ["INDEXNOW_KEY"],
+              "keyLocation": f'{os.environ["SITE_ORIGIN"]}/{os.environ["INDEXNOW_KEY"]}.txt',
+              "urlList": urls,
+          }).encode("utf-8")
+          request = urllib.request.Request(
+              "https://api.indexnow.org/indexnow",
+              data=payload,
+              headers={"Content-Type": "application/json; charset=utf-8"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              print(f"IndexNow accepted {len(urls)} URLs with HTTP {response.status}.")
+          PY

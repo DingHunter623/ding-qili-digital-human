@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /qilylean/reference/
 
 Sitemap: https://qilylean.com/sitemap.xml
