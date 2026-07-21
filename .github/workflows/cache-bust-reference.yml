@@ -1,0 +1,44 @@
+name: Refresh reference entry cache
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cache-bust-reference.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Refresh font loader version in public HTML
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          changed=[]
+          for path in Path('.').rglob('*.html'):
+              try:
+                  text=path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              updated=re.sub(r'font-plus-one\.js\?v=[^"\']+', 'font-plus-one.js?v=20260722-reference-hd-v2', text)
+              if updated!=text:
+                  path.write_text(updated,encoding='utf-8')
+                  changed.append(str(path))
+          print('\n'.join(changed))
+          if not changed:
+              raise SystemExit('No HTML cache references found')
+          PY
+      - name: Commit cache refresh
+        run: |
+          git config user.name 'QilyLean Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git add '*.html' 'qilylean/**/*.html' || true
+          git add -u
+          git commit -m '刷新参考资料双入口与高清预览前端缓存'
+          git push
