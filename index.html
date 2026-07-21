@@ -68,23 +68,51 @@ setTopic('intro');
   <script id="papersAnchorOffsetFix">
   (function(){
     'use strict';
-    var OFFSET_PX=76; // 2 cm at the standard 96 CSS px/in
-    var adjusted=false;
-    function adjustPapersAnchor(){
-      if(location.hash!=='#papers'||adjusted)return;
-      adjusted=true;
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          window.scrollTo(0,window.pageYOffset+OFFSET_PX);
-        });
-      });
+    var TARGET_VIEWPORT_TOP=140;
+    var resizeObserver=null;
+    var stopTimer=null;
+
+    function positionPapers(){
+      if(location.hash!=='#papers')return;
+      var target=document.getElementById('papers');
+      if(!target)return;
+      var root=document.documentElement;
+      var previous=root.style.scrollBehavior;
+      root.style.scrollBehavior='auto';
+      window.scrollTo(0,Math.max(0,target.offsetTop-TARGET_VIEWPORT_TOP));
+      requestAnimationFrame(function(){root.style.scrollBehavior=previous;});
     }
-    window.addEventListener('hashchange',function(){
-      adjusted=false;
-      adjustPapersAnchor();
+
+    function keepPapersPosition(){
+      requestAnimationFrame(function(){requestAnimationFrame(positionPapers);});
+      [350,900,1800,3200].forEach(function(delay){
+        window.setTimeout(positionPapers,delay);
+      });
+      if('ResizeObserver' in window){
+        if(resizeObserver)resizeObserver.disconnect();
+        resizeObserver=new ResizeObserver(positionPapers);
+        resizeObserver.observe(document.body);
+        if(stopTimer)window.clearTimeout(stopTimer);
+        stopTimer=window.setTimeout(function(){
+          if(resizeObserver)resizeObserver.disconnect();
+        },5200);
+      }
+    }
+
+    document.addEventListener('click',function(event){
+      var link=event.target.closest&&event.target.closest('a');
+      if(!link)return;
+      var url;
+      try{url=new URL(link.href,location.href);}catch(error){return;}
+      if(url.origin!==location.origin||url.pathname!==location.pathname||url.hash!=='#papers')return;
+      event.preventDefault();
+      history.pushState(null,'',url.pathname+url.search+url.hash);
+      keepPapersPosition();
     });
-    window.addEventListener('load',adjustPapersAnchor,{once:true});
-    adjustPapersAnchor();
+
+    window.addEventListener('hashchange',keepPapersPosition);
+    window.addEventListener('load',keepPapersPosition,{once:true});
+    if(location.hash==='#papers')keepPapersPosition();
   })();
   </script>
   <script src="experience-lock-v3.js"></script>
