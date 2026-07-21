@@ -25,7 +25,7 @@ function mount(){
     var box=document.createElement('section');
     box.id='moldWarehouseProjectVideo';
     box.className='project-video';
-    box.innerHTML='<h4>项目现场视频｜智能模具库运行实录</h4><video controls preload="metadata" playsinline poster="/mold-smart-warehouse.png?v=20260718"><source src="/zhinengmujuku.mp4?v=20260718-7" type="video/mp4">您的浏览器暂不支持视频播放。</video><p>1200+副模具立体库｜库位管理、存取运行与数字化追溯现场记录</p>';
+    box.innerHTML='<h4>项目现场视频｜智能模具库运行实录</h4><video controls preload="metadata" playsinline poster="/media/projects/mold-after1.webp?v=20260721-speed-v1"><source src="/media/projects/mold-warehouse-540.mp4?v=20260721-speed-v1" type="video/mp4">您的浏览器暂不支持视频播放。</video><p>1200+副模具立体库｜库位管理、存取运行与数字化追溯现场记录</p>';
     var gallery=document.getElementById('moldProjectGalleryV2');
     if(gallery&&gallery.parentNode===card)gallery.insertAdjacentElement('afterend',box);else card.insertBefore(box,card.firstChild);
     var video=box.querySelector('video');
