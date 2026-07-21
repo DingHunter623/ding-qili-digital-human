@@ -1,0 +1,84 @@
+name: Publish protected reference PDFs
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-reference-pdfs.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-reference-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          python -m pip install --upgrade pillow
+
+      - name: Download source PDFs
+        run: |
+          curl -L --fail --retry 3 --retry-delay 2 'https://at.adobe.com/9iICpzjPQkmjY6XZ' -o /tmp/customer-audit.pdf
+          curl -L --fail --retry 3 --retry-delay 2 'https://at.adobe.com/0YNj6kp2a9wh05OM' -o /tmp/iatf-core-tools.pdf
+          python - <<'PY'
+          from pathlib import Path
+          for path in [Path('/tmp/customer-audit.pdf'),Path('/tmp/iatf-core-tools.pdf')]:
+              data=path.read_bytes()
+              if not data.startswith(b'%PDF'):
+                  raise SystemExit(f'{path.name} is not a PDF')
+              print(path.name,len(data))
+          PY
+
+      - name: Render and protect pages
+        run: |
+          rm -rf /tmp/audit-render /tmp/iatf-render
+          mkdir -p /tmp/audit-render /tmp/iatf-render
+          pdftoppm -r 200 -png /tmp/customer-audit.pdf /tmp/audit-render/page
+          pdftoppm -r 200 -png /tmp/iatf-core-tools.pdf /tmp/iatf-render/page
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          from io import BytesIO
+          import shutil
+
+          KEY=b'QilyLeanPreview2026'
+
+          def publish(src_dir,dst_dir,expected,max_width):
+              src=sorted(Path(src_dir).glob('page-*.png'))
+              if len(src)!=expected:
+                  raise SystemExit(f'expected {expected} pages, got {len(src)}')
+              dst=Path(dst_dir)
+              if dst.exists():
+                  shutil.rmtree(dst)
+              dst.mkdir(parents=True)
+              for index,path in enumerate(src,1):
+                  image=Image.open(path).convert('RGB')
+                  if image.width>max_width:
+                      height=round(image.height*max_width/image.width)
+                      image=image.resize((max_width,height),Image.Resampling.LANCZOS)
+                  buffer=BytesIO()
+                  image.save(buffer,'JPEG',quality=93,optimize=True,progressive=True,subsampling=0,dpi=(180,180))
+                  raw=buffer.getvalue()
+                  protected=bytes(value ^ KEY[pos%len(KEY)] for pos,value in enumerate(raw))
+                  output=dst/f'page-{index:02d}.qly'
+                  output.write_bytes(protected)
+                  print(output,image.size,len(protected))
+
+          publish('/tmp/audit-render','qilylean/reference/customer-audit',11,1800)
+          publish('/tmp/iatf-render','qilylean/reference/iatf-core-tools',6,1800)
+          PY
+
+      - name: Commit generated preview assets
+        run: |
+          git config user.name 'QilyLean Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qilylean/reference/customer-audit qilylean/reference/iatf-core-tools
+          git commit -m '发布两份PDF高清加密原文预览资源'
+          git push
