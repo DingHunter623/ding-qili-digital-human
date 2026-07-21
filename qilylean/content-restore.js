@@ -7,6 +7,7 @@
     ['05','数智化工厂第一阶段为什么必须先做IE基础数据','阐明标准工时、工艺路线、资源能力和现场实绩规则为何是数智化工厂的地基工程。',['数智化工厂','IE数据','数据治理'],'papers.html#ie-data'],
     ['06','目视化不是贴标识，而是现场管理语言的统一','从6S标识、看板、通道、安全警示、库位和工位管理，说明目视化如何成为现场协同语言。',['目视化','6S','现场管理'],'papers.html#visual']
   ];
+  const REFERENCE_CARD=['参考资料 · 受控预览','SMED汽车座椅开关注塑件快速换模程序文件','13页标准作业程序参考资料，仅提供低清水印在线预览；不开放PDF原文件、下载、复制、另存或在线打印。','/qilylean/reference-materials.html'];
   const KNOW=[
     ['lean-01','微博精选 01','精益理念与现场改善思考','围绕精益生产理念、Gemba现地现物、问题意识、改善文化和管理机制的公开分享，适合用于现场管理认知对齐与个人知识沉淀。',['Lean Thinking','Gemba','PDCA'],'https://weibo.com/3193549852/5314903351231023'],
     ['lean-02','微博精选 02','精益工具应用与项目落地','围绕VSM、SMED、OEE、标准工时、线平衡、5M2E/5W2H等工具应用，强调工具必须回到现场数据、节拍、物料、质量与交付问题。',['VSM','SMED/OEE','标准工时'],'https://weibo.com/3193549852/5314922569535570'],
@@ -25,13 +26,14 @@
   }
   function buttonText(){return '查看详情';}
   function paperCard(c){return `<article class="paper-card"><small>${c[0]}</small><h3>${c[1]}</h3><p>${c[2]}</p><div class="tags">${c[3].map(t=>`<span class="tag">${t}</span>`).join('')}</div><a class="button" href="${c[4]}">${buttonText()}</a></article>`;}
+  function referenceCard(){return `<article class="paper-card"><small>${REFERENCE_CARD[0]}</small><h3>${REFERENCE_CARD[1]}</h3><p>${REFERENCE_CARD[2]}</p><a class="button" href="${REFERENCE_CARD[3]}" target="_top" rel="noopener">在线预览</a></article>`;}
   function restorePapers(){
     const sec=document.getElementById('papers')||document.getElementById('paper-list');
     if(!sec)return;
     const head=sec.querySelector('.head,.section-head');
-    if(head)head.innerHTML='<h2>改善经验</h2><p>保持原有六篇经验文章入口，按VSM、标准工时、SMED、ERP/MES、IE数据底座和目视化语言六个方向沉淀制造改善方法，低调但不削弱专业厚度。</p>';
-    const grid=sec.querySelector('.paper-grid,.grid-3');
-    if(grid)grid.innerHTML=PAPER_CARDS.map(paperCard).join('');
+    if(head)head.innerHTML='<h2>改善经验</h2><p>恢复原有六篇经验文章入口，按VSM、标准工时、SMED、ERP/MES、IE数据底座和目视化语言六个方向沉淀制造改善方法，并保留受控参考资料入口。</p>';
+    const grid=sec.querySelector('.paper-grid,.grid-3,.grid-4');
+    if(grid){grid.classList.remove('grid-4');grid.classList.add('grid-3');grid.innerHTML=PAPER_CARDS.map(paperCard).join('')+referenceCard();}
   }
   function knowledgeCard(k){return `<article class="knowledge-card"><small>${k[1]}</small><h3>${k[2]}</h3><p>${k[3]}</p><ul class="knowledge-tags">${k[4].map(t=>`<li>${t}</li>`).join('')}</ul><div class="knowledge-actions"><a class="button" href="lean-knowledge.html#${k[0]}">查看整理页</a><a class="button secondary" href="${k[5]}" target="_blank" rel="noopener">微博原文</a></div></article>`;}
   function restoreKnowledge(){
