@@ -1,1 +1,2 @@
 Generate protected high-resolution page assets for the two reference PDFs.
+Retry: 2
