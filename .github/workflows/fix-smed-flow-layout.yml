@@ -1,0 +1,65 @@
+name: Fix SMED anchor and lean flow layout
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-smed-flow-layout.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          # 1) SMED改善经验：修正锚点跳转位置，避免标题被顶部导航遮挡。
+          papers = Path('qilylean/papers.html')
+          text = papers.read_text(encoding='utf-8')
+          css_marker = '.article:first-child{border-top:0}'
+          if '.article[id]{scroll-margin-top:96px}' not in text:
+              if css_marker not in text:
+                  raise SystemExit('papers.html CSS marker not found')
+              text = text.replace(css_marker, css_marker + '.article[id]{scroll-margin-top:96px}', 1)
+
+          script = '''\n  <script id="articleHashOffsetFix">\n  (function(){\n    function alignArticleHash(){\n      if(!location.hash)return;\n      var id=location.hash.slice(1);\n      try{id=decodeURIComponent(id);}catch(error){}\n      var target=document.getElementById(id);\n      if(!target)return;\n      var header=document.querySelector('.topbar');\n      var offset=(header?header.getBoundingClientRect().height:0)+24;\n      var top=target.getBoundingClientRect().top+window.scrollY-offset;\n      window.scrollTo({top:Math.max(0,top),left:0,behavior:'auto'});\n    }\n    window.addEventListener('hashchange',function(){requestAnimationFrame(alignArticleHash);});\n    window.addEventListener('load',function(){requestAnimationFrame(alignArticleHash);setTimeout(alignArticleHash,180);});\n    requestAnimationFrame(alignArticleHash);\n    setTimeout(alignArticleHash,420);\n  })();\n  </script>\n'''
+          if 'id="articleHashOffsetFix"' not in text:
+              if '</body>' not in text:
+                  raise SystemExit('papers.html body marker not found')
+              text = text.replace('</body>', script + '</body>', 1)
+          papers.write_text(text, encoding='utf-8')
+
+          # 2) 十大工具协同逻辑：均匀拆成两行，并保留完整流程箭头。
+          tools = Path('qilylean/lean-tools.html')
+          text = tools.read_text(encoding='utf-8')
+          old_css = '.flow{background:#fff}.flowline{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px;padding:26px;border:1px solid var(--line);box-shadow:var(--shadow)}.step{padding:10px 14px;border-radius:999px;background:var(--forest);color:#fff;font-weight:900}.arrow{color:var(--gold);font-size:25px;font-weight:900}'
+          new_css = '.flow{background:#fff}.flowline{padding:30px;border:1px solid var(--line);box-shadow:var(--shadow);overflow-x:auto}.flow-diagram{min-width:980px;display:grid;gap:10px}.flow-row{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,1fr);align-items:center;gap:8px}.flow-row .step{display:flex;min-height:64px;align-items:center;justify-content:center;padding:10px 12px;border-radius:999px;background:var(--forest);color:#fff;font-weight:900;text-align:center;line-height:1.25}.flow-turn{width:18%;margin-left:auto;color:var(--gold);font-size:34px;line-height:1;text-align:center;font-weight:900}.arrow{color:var(--gold);font-size:28px;font-weight:900;text-align:center}.quote{margin-top:24px;padding:20px 24px;border-left:6px solid var(--gold);background:#eef8f6;font-size:23px;font-weight:900;color:#17443b}@media(max-width:900px){.flowline{padding:20px 12px}.flow-diagram{min-width:920px}}'
+          if old_css in text:
+              text = text.replace(old_css, new_css, 1)
+          elif '.flow-diagram{min-width:980px' not in text:
+              raise SystemExit('lean-tools.html flow CSS marker not found')
+
+          old_html = '<section class="section flow"><div class="inner"><h2>十大工具的协同逻辑</h2><div class="flowline"><span class="step">客户需求</span><span class="arrow">→</span><span class="step">VSM</span><span class="arrow">→</span><span class="step">标准工时</span><span class="arrow">→</span><span class="step">标准作业</span><span class="arrow">→</span><span class="step">ECRS / SMED</span><span class="arrow">→</span><span class="step">单件流</span><span class="arrow">→</span><span class="step">TPM</span><span class="arrow">→</span><span class="step">目视化</span><span class="arrow">→</span><span class="step">5W2H + PDCA</span><span class="arrow">→</span><span class="step">数字化闭环</span></div><div class="quote">工具不是目的，持续改善才是目的；数字化不是终点，管理提升才是终点。</div></div></section>'
+          new_html = '<section class="section flow"><div class="inner"><h2>十大工具的协同逻辑</h2><div class="flowline"><div class="flow-diagram"><div class="flow-row"><span class="step">客户需求</span><span class="arrow">→</span><span class="step">VSM</span><span class="arrow">→</span><span class="step">标准工时</span><span class="arrow">→</span><span class="step">标准作业</span><span class="arrow">→</span><span class="step">ECRS / SMED</span></div><div class="flow-turn" aria-hidden="true">↓</div><div class="flow-row"><span class="step">数字化闭环</span><span class="arrow">←</span><span class="step">5W2H + PDCA</span><span class="arrow">←</span><span class="step">目视化</span><span class="arrow">←</span><span class="step">TPM</span><span class="arrow">←</span><span class="step">单件流</span></div></div></div><div class="quote">工具不是目的，持续改善才是目的；数字化不是终点，管理提升才是终点。</div></div></section>'
+          if old_html in text:
+              text = text.replace(old_html, new_html, 1)
+          elif 'class="flow-diagram"' not in text:
+              raise SystemExit('lean-tools.html flow HTML marker not found')
+          tools.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit and push
+        run: |
+          git config user.name 'QilyLean Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git add qilylean/papers.html qilylean/lean-tools.html
+          git commit -m '修正SMED跳转显示并优化十大工具双行协同逻辑'
+          git push
