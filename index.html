@@ -41,7 +41,7 @@
     .nav a:hover,.nav a:focus-visible{color:var(--forest);background:#eaf6f3;border-color:#b9d9d4;box-shadow:0 7px 18px rgba(15,75,90,.14);transform:translateY(-2px);outline:none}
     .nav a:active{transform:translateY(0) scale(.98)}
     .hero{padding:clamp(34px,5vw,64px) clamp(18px,4vw,68px);color:#fff;background:linear-gradient(120deg,rgba(14,76,91,.98),rgba(25,123,130,.94) 52%,rgba(43,103,118,.96))}
-    .hero-grid{width:min(1320px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);gap:clamp(28px,4vw,66px);align-items:start}
+    .hero-grid{width:min(1360px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,520px);gap:clamp(30px,4vw,70px);align-items:start}
     .eyebrow{color:var(--gold);font-size:15px;font-weight:900}
     h1{margin:10px 0 12px;font-size:clamp(42px,4.8vw,72px);line-height:1.03}
     .lead{max-width:920px;margin:0;color:#fff3df;font-size:clamp(20px,1.55vw,24px);line-height:1.75}
@@ -62,8 +62,8 @@
     .topic-control{min-height:38px;border:1px solid rgba(255,232,173,.34);padding:8px 12px;color:#fff;background:rgba(255,255,255,.08);cursor:pointer;font:inherit;font-size:15px;font-weight:900;transition:transform .15s ease,background .15s ease,color .15s ease}
     .topic-control:hover,.topic-control:focus-visible,.topic-control.active{color:#17231e;background:#ffe39b;border-color:#ffe39b;transform:translateY(-1px);outline:none}
     .answer{padding:18px;color:#ecf7f3;background:rgba(8,51,61,.5);border:1px solid rgba(255,232,173,.22);white-space:pre-wrap;font-size:20px;line-height:1.82}
-    .portrait-frame{overflow:hidden;margin:0;border:1px solid rgba(255,232,173,.52);background:rgba(255,247,232,.86);box-shadow:0 24px 70px rgba(12,62,74,.22)}
-    .portrait-frame img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 42%}
+    .portrait-frame{width:min(520px,100%);overflow:hidden;margin:0 0 0 auto;border:1px solid rgba(255,232,173,.52);background:rgba(255,247,232,.86);box-shadow:0 24px 70px rgba(12,62,74,.22)}
+    .portrait-frame img{display:block;width:100%;height:auto;max-width:none;aspect-ratio:auto;object-fit:contain;object-position:center}
     .portrait-badge{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(22,71,61,.94);border-top:1px solid rgba(255,232,173,.4)}
     .portrait-badge div{padding:12px 13px;background:rgba(255,255,255,.06)}
     .portrait-badge strong{display:block;color:#fff7e8;font-size:20px}
@@ -83,7 +83,7 @@
     .metric em{display:block;margin-top:8px;color:var(--red);font-style:normal;font-weight:850;font-size:15px;line-height:1.55}
     .footer{padding:24px clamp(18px,4vw,56px);color:#d6e5df;background:#101916}
     .footer-inner{width:min(1220px,100%);margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-    @media(max-width:1120px){.hero-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:1120px){.hero-grid{grid-template-columns:1fr}.portrait-frame{margin:0 auto}.metrics{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:820px){.topbar{position:static;align-items:flex-start;flex-direction:column}.nav{justify-content:flex-start}.metrics{grid-template-columns:1fr}.button{width:100%}.portrait-badge{grid-template-columns:1fr}}
   </style>
 </head>
@@ -186,14 +186,64 @@
 
   <script>
     const answers={
-      intro:'您好，我是丁启利制造改善与项目实践交流助手。丁启利具有20年制造工程、IE/PE/NPI、精益改善与咨询交付经验。其核心价值是把现场问题转化为可执行、可验证、可复制、可固化的改善项目，并沉淀为标准、数据与组织机制。',
-      vsm:'VSM改善不是画一张流程图，而是把客户需求、计划传递、物料齐套、生产节拍、WIP、等待、检测确认、包装发货和异常响应放在同一张价值流上分析，找到真正影响交付周期的断点。',
-      oee:'OEE改善不能只盯百分比，而应拆解开动损失、速度损失和质量损失，结合停机Pareto、节拍验证、换型分析、TPM和标准作业逐项关闭损失。',
-      smed:'典型案例是300T冲压机3.5T大型模具换模改善。通过全过程测时、内外部作业分离、工具定置、预装准备与协同标准化，换模时间由约14小时缩短至7小时。',
-      digital:'数智化工厂不能从大屏和软件开始，而要先打通标准工时、工艺路线、资源能力、物料规则、生产实绩与异常口径，再推动ERP、MES、APS和现场改善闭环。',
-      factory:'新工厂规划先定义产品、产能、工艺、设备、人员、物流、公辅、品质与扩展边界，再开展Layout、人流物流、仓储、线边和安全规划。',
-      visual:'目视化不是贴标识，而是统一现场管理语言，使状态、边界、责任、标准与异常一眼可见，并与6S、安全、质量、物流和日常管理机制结合。',
-      fit:'丁启利适合精益经理、工程部经理、改善负责人、制造工程管理、数智化工厂推进及运营改善岗位，优势在体系搭建、项目推进、跨部门协同和成果固化。'
+      intro:`您好，我是丁启利制造改善与项目实践交流助手。丁启利拥有20年制造工程、工业工程、工程管理、精益改善与咨询交付经验，职业路径覆盖IE/TE工程师、工程部负责人、运营改善与精益顾问，服务过PCBA、SMT、汽车电子、电气、新能源、半导体及小家电等制造场景。
+
+【简单化】面对复杂现场，先回到客户需求和真实流程，把问题拆成“流程、节拍、质量、设备、物料、人员、数据、责任、异常”九个可验证要素，避免概念堆砌和表面改善。
+
+【专业化】运用VSM、标准工时、线平衡、OEE、SMED、5M2E、Pareto、8D、Poka-Yoke及Factory Layout等方法，对交付周期、WIP、产能、良率、换型、物流和资源损失进行量化诊断，并通过Pilot试运行验证改善收益。
+
+【标准化】把有效做法沉淀为SOP/SWI、IE工时库、工艺路线、DMS日常管理机制、目视化标准、点检规则及ERP/MES/APS可调用的数据口径，使改善从“个人经验”转化为“组织能力”。
+
+他的核心价值不是单独使用某个工具，而是把简单化、专业化、标准化贯通为：现场诊断 → 数据建模 → 方案设计 → 试点验证 → 横向复制 → 机制固化。`,
+      vsm:`丁启利开展VSM价值流改善，不把重点停留在“画图”，而是用一张图打通客户需求、计划信息流、物料流、生产流和异常流。
+
+【简单化】先界定产品族、客户节拍和起止边界，沿现场实际流向逐工序核实，不用会议室里的理想流程代替Gemba事实；把增值时间、等待时间、库存时间和搬运时间分开表达，让问题一眼可见。
+
+【专业化】采集CT、C/O、人员配置、设备可用率、FPY、WIP、批量、TT、LT及计划频率，计算瓶颈负荷、PCE和Delivery Lead Time结构；同时识别计划冻结、物料齐套、换型、首件确认、检验放行、包装发运等跨部门断点。未来态设计会结合单件流/小批流、FIFO、标准在制、超市拉动、节拍平衡和异常响应，而不是简单压缩库存。
+
+【标准化】统一VSM数据定义、测量周期、责任部门和版本规则，把改善动作转化为5W2H计划、试点验证表、标准作业及PMC/ERP/MES参数；验证有效后再复制到同类产品族。其项目经验中，曾通过价值流和交付链改善使Delivery Lead Time平均缩短约30%。`,
+      oee:`丁启利推进OEE改善，首先明确：OEE不是给现场施压的单一KPI，而是识别设备与产线损失的经营分析工具。
+
+【简单化】先回答设备为什么没有按需求稳定产出，把损失归入“不开机、开得慢、做不好”三类，避免只追一个百分比而掩盖真实问题。
+
+【专业化】按可动率A、性能效率P、质量率Q拆解计划停机、故障停机、换型等待、微停、速度损失、空转、首件不良和返工；结合停机Pareto、实际CT与标准CT校验、瓶颈设备识别、TPM点检、SMED和线平衡，建立损失金额、产能影响和责任层级。对人工线与自动线分别定义数据采集逻辑，防止口径失真。
+
+【标准化】建立停机原因代码、数据来源、班次确认、异常升级、日/周复盘和改善关闭规则，并把验证后的参数写入标准工时、设备能力、保养基准和MES采集口径。其改善实践中，关键产品/设备OEE曾提升并稳定至85%以上，重点是损失结构被持续关闭，而不是数字被短期“做高”。`,
+      smed:`丁启利的典型SMED案例，是300T冲压机配套约3.5T大型模具的快速换模改善，换模时间由约14小时缩短至7小时，降幅约50%。
+
+【简单化】先把“换模慢”拆成停机前能做、必须停机后做、可以并行做、属于等待的四类活动，避免把全部责任压在装模人员动作速度上。
+
+【专业化】对拆模、吊运、清洁、定位、紧固、接线、参数设定、试模、首件确认全过程进行Time Study；运用5M2E识别吊装资源、工具接口、螺栓规格、模具定位、物料准备、人员协同和品质确认等要因，通过内外部作业分离、工具定置、预装准备、快速连接、并行作业和首件放行优化压缩停机窗口。
+
+【标准化】固化换模角色分工、准备清单、工装接口、停机步骤、品质放行、异常处置和复盘表，建立计划冻结与外部准备触发机制。最终成果不仅是一次换模更快，而是形成可重复、可审核、可持续改善的SMED标准体系。`,
+      digital:`丁启利推进数智化工厂，遵循“业务先理顺、数据先可信、系统再联动、自动化再放大”的路径，不从大屏展示或软件采购开始。
+
+【简单化】先明确企业真正要解决的是交付、产能、质量、库存、设备还是成本问题，再把流程和数据中的断点逐一找出，避免用系统覆盖混乱流程。
+
+【专业化】搭建产品编码、BOM、工艺路线、标准工时、标准产能、资源日历、设备能力、班次、人机配置、质量标准、库存策略和生产实绩等制造主数据；厘清ERP管订单与资源、APS管约束排程、MES管执行与追溯、现场改善管真实能力提升的边界，形成订单需求 → 排程 → 齐套 → 执行 → 实绩 → 异常 → 经营反馈闭环。
+
+【标准化】建立数据Owner、版本号、生效日期、变更审批、异常校验和周期审计机制，让IE数据、PMC计划、工艺文件和系统参数保持一致。其优势在于能够把精益改善成果转化为系统可识别的字段、规则和参数，使数智化建设真正落到生产运营。`,
+      factory:`丁启利开展新工厂规划，不先追求“漂亮Layout”，而是先建立可验证的设计输入，再完成产能、流程、物流、安全和扩展的一体化规划。
+
+【简单化】先回答做什么产品、做多少、怎么做、何时达产、未来怎么扩，再把人流、物流、信息流和废弃物流分开梳理，避免设备摆进去以后再反复搬迁。
+
+【专业化】依据产品组合、需求波动、工艺路线、UPH/UPPH、标准工时、设备OEE、班次和人员配置测算产能；同步规划生产分区、仓储与线边、收发货、检验、返修、模具/治具、公辅动力、消防EHS、洁净/防静电、办公生活及扩展边界，并通过From-To物流分析、面积负荷、搬运频次、瓶颈验证和多方案评审优化Layout。
+
+【标准化】建立设计输入清单、版本控制、跨部门评审、冻结节点、设备接口、施工验收和投产爬坡机制，使规划图与设备清单、产能模型、物流方案和实施计划一一对应。其项目经验覆盖广东、浙江、内蒙古、福建、山东等区域累计500+亩工厂/产线规划。`,
+      visual:`丁启利推进目视化项目交付，核心不是“多贴标识”，而是统一现场管理语言，让标准、状态、边界、责任和异常能够被快速识别。
+
+【简单化】先判断现场人员需要一眼看懂什么：哪里可以放、应放多少、谁负责、当前是否正常、异常后找谁处理。无管理用途的装饰性内容不做。
+
+【专业化】将目视化与6S、安全、质量、设备、物流、仓储、工位和DMS结合，建立区域线、通道线、库位编码、状态牌、点检表、安灯/异常标识、标准作业、看板层级及颜色语义；同时考虑观看距离、字体尺寸、安装高度、材质耐久、更新频率和现场环境，确保“看得见、看得懂、用得上”。
+
+【标准化】统一VI规范、编号规则、模板、尺寸、材料、安装、验收、维护和变更机制，明确看板Owner与更新周期，并通过稽查验证实际使用效果。目视化最终要成为现场协同和异常闭环的基础设施，而不是一次性广告工程。`,
+      fit:`丁启利适合精益经理、工程部经理、改善负责人、制造工程管理、数智化工厂推进及运营改善类岗位，尤其适合需要“从混乱现状建立体系，并把改善项目真正落地”的制造企业。
+
+【简单化能力】能够快速进入现场，把高层目标转化为车间听得懂、部门做得到的流程、数据、责任和行动，减少空泛方案与反复沟通。
+
+【专业化能力】具备IE/PE/ME/TE/NPI协同、VSM、标准工时、OEE、SMED、线平衡、质量改善、Factory Layout、ERP/MES/APS基础数据及项目管理的复合能力，可以同时理解技术、生产、质量、PMC和经营语言。
+
+【标准化能力】擅长把项目成果沉淀为制度、SOP/SWI、数据标准、看板机制、审核规则和团队能力，形成可复制的组织方法。其职业价值可以概括为：体系搭建、项目攻坚、跨部门协同、数字化转化和机制固化。`
     };
     const prompts={
       intro:'请用一分钟介绍丁启利的职业能力。',
@@ -229,6 +279,7 @@
     setTopic('intro');
   </script>
   <script src="/qilylean/floating-service.js?v=20260721-speed-v3"></script>
+  <script src="/direct-navigation.js?v=20260722-reliability-v1"></script>
   <script src="/homepage-music.js?v=20260722-recovery-v1"></script>
 </body>
 </html>
