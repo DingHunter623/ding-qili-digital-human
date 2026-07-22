@@ -5,10 +5,11 @@
 <rect x="155" y="125" width="490" height="360" rx="34" fill="#f4fbf9" filter="url(#shadow)"/>
 <rect x="305" y="92" width="190" height="62" rx="24" fill="#caa15f"/>
 <text x="400" y="135" text-anchor="middle" fill="#17322d" font-size="30" font-weight="800">ACTION PLAN</text>
-<text x="400" y="260" text-anchor="middle" fill="#0f4b5a" font-size="96" font-weight="900">5W2H</text>
-<g fill="#177f87" font-size="26" font-weight="800" text-anchor="middle">
-<text x="230" y="345">WHAT</text><text x="400" y="345">WHY</text><text x="570" y="345">WHO</text>
-<text x="230" y="410">WHEN</text><text x="400" y="410">WHERE</text><text x="570" y="410">HOW / COST</text>
+<text x="400" y="255" text-anchor="middle" fill="#0f4b5a" font-size="92" font-weight="900">5W2H</text>
+<g fill="#177f87" font-size="25" font-weight="800" text-anchor="middle">
+<text x="230" y="335">WHAT</text><text x="400" y="335">WHY</text><text x="570" y="335">WHO</text>
+<text x="315" y="390">WHEN</text><text x="485" y="390">WHERE</text>
+<text x="315" y="445">HOW DO</text><text x="485" y="445">HOW MUCH</text>
 </g>
 <path d="M250 530h300" stroke="#ffe39b" stroke-width="10" stroke-linecap="round"/>
 <text x="400" y="605" text-anchor="middle" fill="#fff" font-size="50" font-weight="800">把问题与行动说清楚</text>
