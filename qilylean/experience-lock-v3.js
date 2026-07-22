@@ -1,22 +1,16 @@
 (function(){
 'use strict';
 const PASSWORD='259';
-const SESSION_KEY='experienceUnlocked';
-
-function isUnlocked(){
-  try{return sessionStorage.getItem(SESSION_KEY)==='1';}
-  catch(e){return false;}
-}
 
 function boot(){
   const sec=document.getElementById('experience');
-  if(!sec||sec.dataset.lockV3==='1'||isUnlocked())return;
+  if(!sec||sec.dataset.lockV4==='1')return;
 
   const originalHTML=sec.innerHTML;
-  sec.dataset.lockV3='1';
+  sec.dataset.lockV4='1';
 
   const style=document.createElement('style');
-  style.id='experienceLockV3Style';
+  style.id='experienceLockV4Style';
   style.textContent='.experience-lock-card{max-width:760px;margin:0 auto;padding:28px;border:1px solid var(--line,#d5e4e3);background:#fff;box-shadow:0 14px 36px rgba(15,75,90,.1)}.experience-lock-card h2{margin-top:0;color:var(--forest,#0f4b5a)}.experience-lock-card p{color:var(--muted,#5f7474);font-size:18.5px;line-height:1.75}.experience-lock-form{display:flex;gap:10px;flex-wrap:wrap}.experience-lock-input{flex:1;min-width:220px;padding:12px 14px;border:1px solid var(--line,#d5e4e3);font:inherit}.experience-lock-btn{padding:12px 18px;border:0;background:var(--forest,#0f4b5a);color:#fff;font:inherit;font-weight:850;cursor:pointer}.experience-lock-msg{margin-top:10px;color:#9e4a34;font-weight:800}';
   if(!document.getElementById(style.id))document.head.appendChild(style);
 
@@ -28,8 +22,7 @@ function boot(){
 
   function unlock(){
     if((input.value||'').trim()===PASSWORD){
-      try{sessionStorage.setItem(SESSION_KEY,'1');}catch(e){}
-      sec.dataset.lockV3='0';
+      sec.dataset.lockV4='0';
       sec.innerHTML=originalHTML;
       const heading=sec.querySelector('h2');
       if(heading)heading.focus({preventScroll:true});
