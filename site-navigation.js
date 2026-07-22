@@ -5,12 +5,12 @@
   window.__qilyLeanSiteNavigationV1 = true;
 
   var routes = [
+    ['QilyLean AI', '/ai.html'],
     ['首页', '/'],
     ['能力画像', '/capabilities/'],
     ['履历主线', '/experience/'],
     ['代表项目', '/projects/'],
     ['改善经验', '/improvements/'],
-    ['QilyLean AI', '/ai.html'],
     ['知识分享', '/knowledge/'],
     ['行走印记', '/moments.html']
   ];
@@ -43,7 +43,7 @@
     if (document.querySelector('link[href^="/site-shell.css"]')) return;
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/site-shell.css?v=20260722-modules-v1';
+    link.href = '/site-shell.css?v=20260722-modules-v2';
     document.head.appendChild(link);
   }
 
@@ -68,11 +68,12 @@
 
     var parent = parentRoute(path, modulePath);
     if (parent) {
+      header.classList.add('qily-has-back');
       var back = document.createElement('a');
       back.className = 'qily-back-link';
       back.href = parent;
       back.textContent = '← 返回上一层';
-      nav.appendChild(back);
+      document.body.appendChild(back);
     }
 
     if (oldNav) oldNav.replaceWith(nav);

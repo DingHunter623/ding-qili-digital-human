@@ -60,11 +60,37 @@
 .nav .qily-back-link,
 .site-nav .qily-back-link,
 .qily-back-link {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid var(--qily-teal);
+  border-radius: 10px;
   color: #fff !important;
   background: var(--qily-teal);
-  border-color: var(--qily-teal);
+  box-shadow: 0 10px 24px rgba(7, 60, 71, .24);
   font-weight: 900;
+  text-decoration: none;
+  transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
+
+.qily-back-link:hover,
+.qily-back-link:focus-visible {
+  background: var(--qily-forest);
+  box-shadow: 0 12px 28px rgba(7, 60, 71, .32);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.qily-back-link:active { background: var(--qily-deep); transform: translateY(0) scale(.98); }
+.qily-has-back .nav,
+.qily-has-back .site-nav { padding-right: 142px; }
 
 .module-page {
   margin: 0;
@@ -295,6 +321,10 @@
   .qily-site-header { padding: 10px 14px; }
   .qily-site-header .site-nav { gap: 4px; }
   .qily-site-header .site-nav a { min-height: 36px; padding: 6px 8px; font-size: 13px; }
+  .qily-has-back .site-nav { padding-right: 0; }
+  .qily-has-back .qily-brand,
+  .qily-has-back .brand { max-width: calc(100vw - 162px); }
+  .qily-back-link { min-height: 40px; padding: 7px 12px; font-size: 14px; }
   .qily-brand { white-space: normal; }
   .module-subnav a,
   .module-action,
