@@ -18,7 +18,7 @@ function fixNavigation(){
     primary.setAttribute('href','#daily-insights');
   }else{
     primary.textContent='知识分享';
-    primary.setAttribute('href','/qilylean/lean-knowledge.html#daily-insights');
+    primary.setAttribute('href','/knowledge/');
     primary.setAttribute('target','_top');
   }
   links.slice(1).forEach(function(link){link.remove();});

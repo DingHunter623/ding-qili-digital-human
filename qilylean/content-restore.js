@@ -55,7 +55,7 @@
       let primary=knowledgeLinks[0];
       if(!primary){primary=document.createElement('a');nav.appendChild(primary);}
       primary.textContent='知识分享';
-      primary.href='/qilylean/lean-knowledge.html#daily-insights';
+      primary.href='/knowledge/';
       primary.setAttribute('target','_top');
       knowledgeLinks.slice(1).forEach(a=>a.remove());
     }
