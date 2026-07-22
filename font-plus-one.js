@@ -3,10 +3,10 @@
 
   function normalizeModuleNavigation(){
     var routeMap={
-      '#capabilities':'/qilylean/home.html#capabilities',
-      '#experience':'/qilylean/home.html#experience',
+      '#capabilities':'/capabilities/',
+      '#experience':'/experience/',
       '#projects':'/projects/',
-      '#papers':'/qilylean/home.html#papers',
+      '#papers':'/improvements/',
       '#knowledge':'/knowledge/'
     };
     Array.prototype.forEach.call(document.querySelectorAll('.nav a[href]'),function(link){
