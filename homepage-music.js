@@ -13,6 +13,9 @@
   var STATE_KEY = 'qilyleanBackgroundMusicStateV2';
   var DRAG_THRESHOLD = 5;
   var EDGE_GAP = 10;
+  var AUDIO_SRC = '/%E6%88%91%E7%9A%84%E6%A2%A6%EF%BC%88%E5%BC%A0%E9%9D%93%E9%A2%96%EF%BC%89.mp3';
+  var MODULE_ROUTES = ['/', '/ai.html', '/capabilities/', '/experience/', '/improvements/', '/knowledge/', '/moments.html'];
+  var prefetchedDocuments = Object.create(null);
 
   var style = document.createElement('style');
   style.id = 'siteMusicStyle';
@@ -32,9 +35,10 @@
 
   var audio = document.createElement('audio');
   audio.id = 'siteBackgroundMusic';
-  audio.src = '/%E6%88%91%E7%9A%84%E6%A2%A6%EF%BC%88%E5%BC%A0%E9%9D%93%E9%A2%96%EF%BC%89.mp3';
+  audio.src = AUDIO_SRC;
   audio.preload = 'auto';
-  audio.autoplay = true;
+  audio.autoplay = false;
+  try { audio.fetchPriority = 'high'; } catch (error) {}
   audio.loop = true;
   audio.volume = DEFAULT_VOLUME;
   audio.setAttribute('playsinline', '');
@@ -91,6 +95,47 @@
     button.setAttribute('aria-pressed', audio.muted ? 'true' : 'false');
   }
 
+  function prefetchDocument(href) {
+    try {
+      var url = new URL(href, location.href);
+      url.hash = '';
+      if (url.origin !== location.origin || url.href === location.href.split('#')[0]) return;
+      if (prefetchedDocuments[url.href]) return;
+      prefetchedDocuments[url.href] = true;
+      var hint = document.createElement('link');
+      hint.rel = 'prefetch';
+      hint.as = 'document';
+      hint.href = url.href;
+      document.head.appendChild(hint);
+    } catch (error) {}
+  }
+
+  function warmLinkedPage(event) {
+    var target = event.target;
+    var link = target && target.closest ? target.closest('a[href]') : null;
+    if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+    prefetchDocument(link.href);
+  }
+
+  function warmModuleRoutes() {
+    MODULE_ROUTES.forEach(prefetchDocument);
+  }
+
+  document.addEventListener('pointerover', warmLinkedPage, { passive: true, capture: true });
+  document.addEventListener('touchstart', warmLinkedPage, { passive: true, capture: true });
+  document.addEventListener('focusin', warmLinkedPage, true);
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    var link = target && target.closest ? target.closest('a[href]') : null;
+    if (!link) return;
+    try {
+      if (new URL(link.href, location.href).origin === location.origin) writeState();
+    } catch (error) {}
+  }, true);
+
+  if ('requestIdleCallback' in window) requestIdleCallback(warmModuleRoutes, { timeout: 1200 });
+  else setTimeout(warmModuleRoutes, 650);
+
   var savedState = readState();
   if (savedState) audio.muted = Boolean(savedState.muted);
 
@@ -104,10 +149,13 @@
     try { audio.currentTime = nextTime; } catch (error) {}
   }
 
-  audio.addEventListener('loadedmetadata', function () {
+  function startPlayback() {
     restorePlaybackPosition();
     tryPlay();
-  }, { once: true });
+  }
+
+  if (audio.readyState >= 1) startPlayback();
+  else audio.addEventListener('loadedmetadata', startPlayback, { once: true });
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), Math.max(min, max));
@@ -176,13 +224,16 @@
   document.addEventListener('touchstart', resumeAfterGesture, { once: true, capture: true });
   document.addEventListener('keydown', resumeAfterGesture, { once: true, capture: true });
   window.addEventListener('resize', keepButtonInView);
+  window.addEventListener('beforeunload', writeState);
   window.addEventListener('pagehide', writeState);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') writeState();
+  });
   window.addEventListener('pageshow', function () {
     if (!audio.muted && audio.paused) tryPlay();
   });
-  window.setInterval(writeState, 1000);
+  window.setInterval(writeState, 400);
+  window.__qilyLeanMusicWriteState = writeState;
 
   render();
-  restorePlaybackPosition();
-  tryPlay();
 })();
