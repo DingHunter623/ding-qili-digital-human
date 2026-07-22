@@ -1,2 +1,18 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QilyLean 每日洞察</title><script>location.replace('/daily-insights.html'+location.search+location.hash);</script></head><body><a href="/daily-insights.html">进入 QilyLean 每日洞察</a>  <script src="/homepage-music.js?v=20260722-recovery-v1"></script>
-</body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>每日工程版简报｜QilyLean</title>
+  <script>
+    (function () {
+      var date = (location.hash || '').slice(1);
+      var target = /^\d{4}-\d{2}-\d{2}$/.test(date)
+        ? '/qilylean/daily/' + date + '.html'
+        : '/qilylean/daily-insights.html';
+      location.replace(target);
+    })();
+  </script>
+</head>
+<body><a href="/qilylean/daily-insights.html">进入每日工程版简报</a></body>
+</html>

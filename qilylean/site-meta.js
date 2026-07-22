@@ -30,5 +30,5 @@ meta('name','theme-color','#0f4b5a');
 fixSmedAnchorView();
 if(/(?:home|home-live|home-fixed)\.html$|qilylean\/?$/i.test(location.pathname))load('project-mold-video.js?v=20260718','moldWarehouseVideoScript');
 if(/daily-insights\.html$/i.test(location.pathname))load('daily-backfill-20251219-20260707.js?v=20260718-1','dailyBackfillArchiveScript');
-if(/lean-knowledge\.html$/i.test(location.pathname))load('knowledge-publish-fix-v1.js?v=20260722-dedupe-howdo-v3','knowledgePublishFixScript');
+if(/lean-knowledge\.html$/i.test(location.pathname))load('knowledge-publish-fix-v1.js?v=20260722-independent-v4','knowledgePublishFixScript');
 })();

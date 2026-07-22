@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  if (window.__qilyLeanSiteNavigationV4) return;
-  window.__qilyLeanSiteNavigationV4 = true;
+  if (window.__qilyLeanSiteNavigationV5) return;
+  window.__qilyLeanSiteNavigationV5 = true;
 
   var HOME_URL = 'https://qilylean.com/';
   var HOME_QR_SRC = '/qilylean/qilylean-home-qr.svg?v=20260722-navigation-v4';
@@ -28,13 +28,14 @@
     if (path.indexOf('/capabilities/') === 0) return '/capabilities/';
     if (path.indexOf('/experience/') === 0) return '/experience/';
     if (path.indexOf('/improvements/') === 0 || /\/qilylean\/papers\.html$/.test(path)) return '/improvements/';
-    if (path.indexOf('/knowledge/') === 0 || /\/qilylean\/(?:lean-knowledge|daily-insights|lean-tools|execution-loop|reference-|gbt2828)/.test(path)) return '/knowledge/';
+    if (path.indexOf('/knowledge/') === 0 || path.indexOf('/qilylean/daily/') === 0 || /\/qilylean\/(?:lean-knowledge|daily-insights|lean-tools|execution-loop|reference-|gbt2828)/.test(path)) return '/knowledge/';
     if (/\/moments\.html$/.test(path)) return '/moments.html';
     return '';
   }
 
   function parentRoute(path) {
     if (path === '/') return '/';
+    if (path.indexOf('/qilylean/daily/') === 0) return '/qilylean/daily-insights.html';
     if (path.indexOf('/knowledge/') === 0 && path !== '/knowledge/') return '/knowledge/';
     if (/\/qilylean\/(?:lean-knowledge|daily-insights|lean-tools|execution-loop|reference-|gbt2828)/.test(path)) return '/knowledge/';
     return '/';
