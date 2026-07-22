@@ -20,7 +20,7 @@
     load('wechat-qr-official.js?v=official-full1','wechatQrOfficialScript');
     load('public-copy-polish.js?v=public1','publicCopyPolishScript');
     load('public-boundary-fix.js?v=boundary1','publicBoundaryFixScript');
-    load('knowledge-publish-fix-v1.js?v=20260722-reference-hd-v2','knowledgePublishFixScript');
+    load('knowledge-publish-fix-v1.js?v=20260722-dedupe-howdo-v3','knowledgePublishFixScript');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
