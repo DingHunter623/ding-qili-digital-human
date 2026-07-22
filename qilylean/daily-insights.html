@@ -50,6 +50,7 @@
 function copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.left='-9999px';document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();return Promise.resolve();}
 document.querySelectorAll('.share').forEach(function(btn){btn.addEventListener('click',async function(){var article=btn.closest('.post');var url=location.href.split('#')[0]+'#'+article.id;var title=btn.dataset.title||document.title;var status=article.querySelector('.status');try{if(navigator.share)await navigator.share({title:title,text:title,url:url});else{await copyText(title+'\n'+url);if(status)status.textContent='链接已复制';}}catch(e){await copyText(title+'\n'+url);if(status)status.textContent='链接已复制';}setTimeout(function(){if(status)status.textContent='';},2200);});});
 </script>
+<script src="daily-2026-07-22.js?v=20260722-howdo-v2"></script>
 <script src="daily-2026-07-15.js"></script>
 <script src="daily-2026-07-16.js"></script>
 <script src="daily-2026-07-17.js"></script>
