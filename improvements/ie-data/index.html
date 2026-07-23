@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数智化工厂第一阶段为什么必须先做IE基础数据｜QilyLean 改善经验</title>
+  <meta name="description" content="阐明标准工时、工艺路线、资源能力和现场实绩规则为何是数智化工厂的地基工程。">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://qilylean.com/improvements/ie-data/">
+  <link rel="stylesheet" href="/site-shell.css?v=20260722-modules-v4">
+  <style>
+    :root{--ink:#182420;--muted:#5f7474;--line:#d5e4e3;--paper:#f3faf9;--white:#fff;--forest:#0f4b5a;--teal:#178b94;--copper:#caa15f;--plum:#6e3f5f;--shadow:0 20px 55px rgba(15,75,90,.16)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);font-size:16.5px;line-height:1.72}a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px clamp(18px,4vw,56px);background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}.brand{display:flex;align-items:center;gap:10px;color:var(--forest);font-weight:850}.brand-mark{display:none}.nav{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:14px}.nav a{text-decoration:none}.nav a:hover{color:var(--teal)}
+    .hero{padding:clamp(42px,6vw,78px) clamp(18px,4vw,68px);color:#fff;background:linear-gradient(120deg,rgba(14,76,91,.98),rgba(25,123,130,.94) 54%,rgba(43,103,118,.96)),radial-gradient(circle at 82% 12%,rgba(210,236,230,.34),transparent 34%)}.hero-inner{width:min(1180px,100%);margin:auto}.eyebrow{color:#ffe8ad;font-size:14px;font-weight:850}.hero h1{margin:10px 0 14px;font-size:clamp(36px,4.8vw,66px);line-height:1.05}.lead{max-width:960px;color:#fff3df;font-size:clamp(18px,1.5vw,22px)}
+    .section{padding:clamp(42px,6vw,76px) clamp(18px,4vw,56px);background:#fff;border-bottom:1px solid var(--line)}.section.alt{background:#eef5f2}.section-inner{width:min(1180px,100%);margin:auto}.section-head{max-width:920px;margin-bottom:24px}.section h2{margin:0 0 10px;color:var(--forest);font-size:clamp(27px,3vw,42px);line-height:1.18}.section-head p{margin:0;color:var(--muted)}
+    .paper-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.paper-card{display:flex;flex-direction:column;min-height:260px;padding:20px;border:1px solid var(--line);background:#fff;border-top:4px solid var(--teal);box-shadow:var(--shadow)}.paper-card:nth-child(2n){border-top-color:var(--copper)}.paper-card:nth-child(3n){border-top-color:var(--plum)}.paper-card small{color:var(--copper);font-weight:850}.paper-card h3{margin:8px 0 10px;color:var(--forest);font-size:19px;line-height:1.36}.paper-card p{margin:0 0 16px;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}.tag{display:inline-flex;padding:4px 9px;border:1px solid var(--line);background:#f7fbf7;color:#46615f;font-size:13px}.button,.share-button{display:inline-flex;align-items:center;justify-content:center;width:max-content;min-height:40px;margin-top:16px;padding:8px 15px;border:1px solid rgba(23,139,148,.35);border-radius:999px;color:#fff;background:var(--forest);text-decoration:none;font-weight:850;font:inherit;cursor:pointer}.button:hover,.share-button:hover{background:var(--teal)}
+    .article{padding:34px 0;border-top:1px solid var(--line)}.article:first-child{border-top:0}.article[id]{scroll-margin-top:96px}.article h2{color:var(--forest);font-size:clamp(26px,3vw,40px)}.subtitle{margin:-4px 0 14px;color:var(--teal);font-weight:850}.meta{margin-bottom:14px;color:var(--muted);font-size:14px}.share-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 22px}.share-row .share-button{margin-top:0;color:#17443b;background:#ffe39b;border-color:#f5c861}.share-row .share-button:hover{background:#f5c861}.share-status{color:var(--teal);font-size:14px;font-weight:800}.article h3{margin:28px 0 9px;color:#17443b;font-size:22px}.article p{margin:0 0 13px;color:#344845}.toc{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}.toc a{padding:7px 11px;border:1px solid rgba(255,232,173,.5);color:#fff8ea;background:rgba(255,255,255,.08);text-decoration:none;font-size:14px;font-weight:800}.footer{padding:24px clamp(18px,4vw,56px);color:#d6e5df;background:#101916}.footer-inner{width:min(1180px,100%);margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    @media(max-width:980px){.paper-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{align-items:flex-start;flex-direction:column}}@media(max-width:700px){.paper-grid{grid-template-columns:1fr}.button,.share-button{width:100%}.hero{padding-top:34px}.topbar{position:static}.share-row{align-items:stretch;flex-direction:column}.share-status{min-height:20px}}
+  
+    .article-hub{padding:30px clamp(18px,4vw,56px);color:#fff;background:linear-gradient(120deg,rgba(14,76,91,.98),rgba(25,123,130,.94) 54%,rgba(43,103,118,.96))}
+    .article-hub-inner{width:min(1180px,100%);margin:auto}
+    .article-hub .hub-back{display:inline-flex;margin-bottom:8px;color:#ffe8ad;text-decoration:none;font-size:14px;font-weight:850}
+    .article-hub h1{margin:2px 0 8px;font-size:clamp(30px,3.6vw,48px);line-height:1.12}
+    .article-hub .hub-lead{margin:0;color:#fff3df;font-size:clamp(17px,1.35vw,20px)}
+    .article-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+    .article-links a{display:inline-flex;align-items:center;min-height:38px;padding:7px 11px;border:1px solid rgba(255,232,173,.5);color:#fff8ea;background:rgba(255,255,255,.08);text-decoration:none;font-size:14px;font-weight:800;transition:transform .16s ease,background-color .16s ease,color .16s ease}
+    .article-links a:hover,.article-links a:focus-visible,.article-links a[aria-current="page"]{color:#17322d;background:#ffe39b;outline:none;transform:translateY(-1px)}
+    .article-page-content .article{padding-top:0}
+    @media(max-width:700px){.article-links{display:grid;grid-template-columns:1fr 1fr}.article-links a{justify-content:center;text-align:center}.article-hub{padding-top:24px}}
+
+  </style>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span>制造改善与项目实践主页</span></a><nav class="nav" aria-label="网站导航"><a href="/">首页</a><a href="/capabilities/">能力画像</a><a href="/experience/">履历主线</a><a href="/projects/">代表项目</a><a href="/improvements/" aria-current="page">改善经验</a><a href="/ai.html">QilyLean AI</a><a href="/knowledge/">知识分享</a><a href="/moments.html">行走印记</a></nav></header>
+  <main>
+    <section class="article-hub">
+      <div class="article-hub-inner">
+        <a class="hub-back" href="/improvements/">← 返回改善经验清单</a>
+        <h1>改善经验</h1>
+        <p class="hub-lead">数智化工厂第一阶段为什么必须先做IE基础数据</p>
+        <nav class="article-links" aria-label="改善经验六大模块"><a href="/improvements/vsm/">01 VSM价值流</a><a href="/improvements/standard-time/">02 标准工时</a><a href="/improvements/smed/">03 SMED换模</a><a href="/improvements/erp-mes/">04 ERP/MES协同</a><a href="/improvements/ie-data/" aria-current="page">05 IE数据底座</a><a href="/improvements/visual/">06 目视化语言</a></nav>
+      </div>
+    </section>
+    <section class="section article-page-content">
+      <div class="section-inner">
+        <article class="article" id="ie-data"><h2>数智化工厂第一阶段为什么必须先做IE基础数据</h2><div class="subtitle">标准工时、产能模型与现场数据治理的先导价值</div><div class="meta">撰写：丁启利｜栏目：制造改善实践</div><div class="share-row"><button class="share-button" data-title="数智化工厂第一阶段为什么必须先做IE基础数据" data-target="ie-data">转发本文</button><span class="share-status" aria-live="polite"></span></div><h3>一、数智化误区：先上系统和大屏，不等于先有数字化能力</h3><p>很多企业谈数智化工厂时，第一反应是MES、APS、数据大屏、自动化产线、AGV和视觉检测。这些工具当然有价值，但如果基础数据不准，系统越先进，暴露的问题越多。</p><p>数智化不是把现场拍成图片、把报表搬到屏幕，也不是把人工操作全部替换为自动化。数智化的本质，是让业务流程、资源能力、现场执行和经营结果形成数据闭环。IE基础数据正是这个闭环的底层骨架。</p><h3>二、IE基础数据包括什么</h3><p>IE基础数据不仅是标准工时。完整的IE数据应包括产品族、工艺路线、工序清单、工位设置、作业内容、人员配置、设备/工装、标准工时、标准产能、UPPH、工位负荷率、换型时间、良率、班次可用工时和异常边界。</p><p>这些数据共同回答几个基本问题：一个订单需要多少时间？需要多少人？占用哪些设备？瓶颈在哪里？一天能做多少？计划是否排得下？如果换型或缺料，会影响多少交付？没有这些数据，排产、成本、交付和改善都会停留在经验判断。</p><h3>三、为什么第一阶段必须先做IE数据</h3><p>第一，IE数据决定计划可执行性。没有标准工时和产能模型，PMC排产只能凭经验。第二，IE数据决定系统参数可信度。ERP/MES/APS需要工艺路线、工时和资源能力作为输入。第三，IE数据决定改善评价基准。没有基准，就无法判断改善前后是否真正有效。</p><p>第四，IE数据决定组织协同语言。生产说忙、PMC说急、工程说变更、品质说风险，如果没有共同数据，部门之间只能争论感受。IE数据把感受转化为事实，把经验转化为模型，把问题转化为可讨论的管理对象。</p><h3>四、第一阶段实施路径：从主力产品族开始</h3><p>IE数据建设不宜一开始追求覆盖所有产品。更有效的方式是先选取主力产品族、核心客户产品或交付压力较大的产品，建立样板数据。样板数据包括产品编码、工艺路线、工序工时、标准产能、工位人数、瓶颈工序、换型时间和质量控制点。</p><p>样板建立后，再扩展到80%左右的高频产品。对于长尾低频产品，可以先建立临时工时或产品族估算工时，后续在实际生产中校准。这样既能保证推进速度，又能避免数据建设变成无休止的表格整理。</p><h3>五、与ERP/MES/APS的接口：让数据能被系统使用</h3><p>IE数据必须具备系统可用性。字段命名、产品编码、工序名称、工位名称、工作中心、设备资源和工时单位应保持一致。若IE表格与ERP编码体系脱节，即使数据测得再细，也难以进入系统。</p><p>建议在第一阶段就建立IE与PMC、ERP、工程、生产之间的数据接口规则。例如，标准工时表要能匹配产品编码，工艺路线要能匹配工作中心，标准产能要能转换为日计划能力，生产实绩要能反向校验标准工时。这样的接口设计，比单纯追求表格美观更重要。</p><h3>六、管理风险：IE数据不能一开始就变成现场压力</h3><p>IE数据导入初期，现场最担心的是被用来压产量、扣绩效和追责。因此，管理层必须明确第一阶段目标：数据采集、问题暴露、模型建立、试运行校准，而不是立刻作为个人KPI。</p><p>合理做法是用数据发现系统性问题，例如工位不平衡、物料等待、设备瓶颈、作业方法不统一、工装不足和计划波动。只有当数据稳定、异常边界清楚、现场认可后，才能逐步用于经营分析和绩效评价。</p><h3>七、结论：IE基础数据是数智化工厂的地基工程</h3><p>数智化工厂第一阶段最容易被低估的工作，就是IE基础数据建设。它不像大屏和自动化设备那样直观，却决定后续系统是否真正有效。</p><p>企业如果先把标准工时、标准产能、工艺路线、工位负荷和实绩规则建设起来，再推进ERP/MES/APS和自动化，数智化才会建立在真实运营能力之上。否则，系统越先进，越可能只是把不准的数据用更漂亮的界面展示出来。</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="footer-inner"><span>丁启利 | 制造改善实践论文、精益生产、IE标准工时、数智化工厂规划</span><span><a href="/">返回主页</a></span></div></footer>
+  <script>
+    const shareButtons = Array.from(document.querySelectorAll('.share-button'));
+    const pagePath = window.location.origin + window.location.pathname;
+    async function copyToClipboard(text) { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return; } const textarea = document.createElement('textarea'); textarea.value = text; textarea.setAttribute('readonly', ''); textarea.style.position = 'fixed'; textarea.style.left = '-9999px'; document.body.appendChild(textarea); textarea.select(); document.execCommand('copy'); document.body.removeChild(textarea); }
+    shareButtons.forEach((button) => { button.addEventListener('click', async () => { const title = button.dataset.title || document.title; const target = button.dataset.target || ''; const url = `${pagePath}#${target}`; const status = button.parentElement.querySelector('.share-status'); const shareText = `${title}\n${url}`; try { if (navigator.share) { await navigator.share({ title, text: title, url }); if (status) status.textContent = '已调起系统转发'; } else { await copyToClipboard(shareText); if (status) status.textContent = '链接已复制，可粘贴转发'; } } catch (error) { await copyToClipboard(shareText); if (status) status.textContent = '链接已复制，可粘贴转发'; } window.setTimeout(() => { if (status) status.textContent = ''; }, 3600); }); });
+  </script>
+  <script src="/qilylean/floating-service.js?v=20260721-home-nav-fix-v1"></script>
+  <script src="/site-navigation.js?v=20260722-modules-v4"></script>
+  <script src="/homepage-music.js?v=20260722-continuous-v3"></script>
+
+  <script id="articleHashOffsetFix">
+  (function(){
+    function alignArticleHash(){
+      if(!location.hash)return;
+      var id=location.hash.slice(1);
+      try{id=decodeURIComponent(id);}catch(error){}
+      var target=document.getElementById(id);
+      if(!target)return;
+      var header=document.querySelector('.topbar');
+      var offset=(header?header.getBoundingClientRect().height:0)+24;
+      var top=target.getBoundingClientRect().top+window.scrollY-offset;
+      window.scrollTo({top:Math.max(0,top),left:0,behavior:'auto'});
+    }
+    window.addEventListener('hashchange',function(){requestAnimationFrame(alignArticleHash);});
+    window.addEventListener('load',function(){requestAnimationFrame(alignArticleHash);setTimeout(alignArticleHash,180);});
+    requestAnimationFrame(alignArticleHash);
+    setTimeout(alignArticleHash,420);
+  })();
+  </script>
+</body>
+</html>
