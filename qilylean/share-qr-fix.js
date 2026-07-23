@@ -1,6 +1,8 @@
 (function(){
 'use strict';
 var HOME_URL='https://qilylean.com/';
+var BRAND='QilyLean｜启力精益';
+var SHARE_TITLE='QilyLean｜启力精益｜精益生产、工程改善与数智工厂';
 var QR_SRC='/qilylean/qilylean-home-qr.svg?v=20260717-qrfix2';
 
 function copyText(text){
@@ -27,9 +29,9 @@ function applyFix(){
   ensureStyle();
 
   var brand=panel.querySelector('.share-brand');
-  if(brand)brand.textContent='QilyLean';
+  if(brand)brand.textContent=BRAND;
   var title=panel.querySelector('h3');
-  if(title)title.textContent='分享主页';
+  if(title)title.textContent='分享启力精益官网';
 
   var urlEl=panel.querySelector('.share-url');
   if(urlEl)urlEl.textContent=HOME_URL;
@@ -39,13 +41,15 @@ function applyFix(){
     qr=document.createElement('img');
     qr.className='qily-share-qr';
     qr.src=QR_SRC;
-    qr.alt='QilyLean主页二维码，识别后访问 https://qilylean.com/';
+    qr.alt='QilyLean启力精益官网二维码，识别后访问 https://qilylean.com/';
     qr.loading='eager';
     if(urlEl)panel.insertBefore(qr,urlEl);else panel.appendChild(qr);
+  }else{
+    qr.alt='QilyLean启力精益官网二维码';
   }
 
   var note=panel.querySelector('.share-note');
-  if(note)note.textContent='长按二维码可保存、转发或识别访问主页。';
+  if(note)note.textContent='长按二维码可保存、转发或识别访问启力精益官网。';
 
   if(urlEl&&!urlEl.dataset.homeUrlGuard){
     urlEl.dataset.homeUrlGuard='1';
@@ -60,9 +64,9 @@ function applyFix(){
       event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
       var noteEl=document.querySelector('#shareMask .share-note');
       if(action.getAttribute('data-share')==='system'&&navigator.share){
-        navigator.share({title:'QilyLean｜制造改善与项目实践主页',url:HOME_URL}).catch(function(){});
+        navigator.share({title:SHARE_TITLE,text:'启精益之智，聚企业之力。让改善形成体系，让精益产生力量。',url:HOME_URL}).catch(function(){});
       }else{
-        copyText(HOME_URL).then(function(){if(noteEl)noteEl.textContent='主页网址已复制：'+HOME_URL;});
+        copyText(HOME_URL).then(function(){if(noteEl)noteEl.textContent='官网网址已复制：'+HOME_URL;});
       }
     },true);
   }
