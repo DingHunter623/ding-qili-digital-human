@@ -36,6 +36,7 @@
   function parentRoute(path) {
     if (path === '/') return '/';
     if (path.indexOf('/qilylean/daily/') === 0) return '/qilylean/daily-insights.html';
+    if (path.indexOf('/improvements/') === 0 && path !== '/improvements/') return '/improvements/';
     if (path.indexOf('/knowledge/') === 0 && path !== '/knowledge/') return '/knowledge/';
     if (/\/qilylean\/(?:lean-knowledge|daily-insights|lean-tools|execution-loop|reference-|gbt2828)/.test(path)) return '/knowledge/';
     return '/';
