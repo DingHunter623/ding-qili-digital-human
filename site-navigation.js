@@ -6,6 +6,7 @@
 
   var HOME_URL = 'https://qilylean.com/';
   var HOME_QR_SRC = '/qilylean/qilylean-home-qr.svg?v=20260722-navigation-v4';
+  var SHARED_ASSET_VERSION = '20260723-speed-v4';
   var PHONE_NUMBERS = ['13450014003', '15168120722', '17681788259'];
   var routes = [
     ['首页', '/'],
@@ -48,12 +49,12 @@
   function addStylesheet() {
     var current = document.querySelector('link[href^="/site-shell.css"]');
     if (current) {
-      current.href = '/site-shell.css?v=20260723-card-layout-v2';
+      current.href = '/site-shell.css?v=' + SHARED_ASSET_VERSION;
       return;
     }
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/site-shell.css?v=20260723-card-layout-v2';
+    link.href = '/site-shell.css?v=' + SHARED_ASSET_VERSION;
     document.head.appendChild(link);
   }
 
@@ -86,6 +87,31 @@
     header.classList.add('qily-global-header');
     if (oldNav && oldNav.isConnected) oldNav.replaceWith(nav);
     else header.appendChild(nav);
+  }
+
+  function enableNavigationPrefetch() {
+    var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (connection && (connection.saveData || /(?:^|-)2g$/.test(connection.effectiveType || ''))) return;
+
+    document.querySelectorAll('.qily-global-nav a[href],.site-nav a[href]').forEach(function (link) {
+      var done = false;
+      function prefetch() {
+        if (done) return;
+        var target;
+        try { target = new URL(link.href, location.href); } catch (error) { return; }
+        if (target.origin !== location.origin || normalizedPath(target.pathname) === normalizedPath(location.pathname)) return;
+        done = true;
+        target.hash = '';
+        var hint = document.createElement('link');
+        hint.rel = 'prefetch';
+        hint.href = target.href;
+        hint.fetchPriority = 'low';
+        document.head.appendChild(hint);
+      }
+      link.addEventListener('pointerenter', prefetch, { once: true, passive: true });
+      link.addEventListener('touchstart', prefetch, { once: true, passive: true });
+      link.addEventListener('focus', prefetch, { once: true, passive: true });
+    });
   }
 
   function copyText(text) {
@@ -291,6 +317,7 @@
   function boot() {
     addStylesheet();
     buildNavigation();
+    enableNavigationPrefetch();
     buildDock();
   }
 
