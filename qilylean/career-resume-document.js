@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var DATA_URL = '/qilylean/private/ding-qili-resume.pdf.b64?v=20260723-resume-v1';
+  var DATA_URL = '/qilylean/private/ding-qili-resume.pdf.b64?v=20260723-resume-v2';
   var FILE_NAME = '精益经理-工程部经理-丁启利.pdf';
   var blobUrl = '';
   var loadingPromise = null;
@@ -55,7 +55,7 @@
     if (loadingPromise) return loadingPromise;
 
     buttons.forEach(function (button) { button.disabled = true; });
-    status.textContent = '正在安全加载加密履历文件……';
+    status.textContent = '正在加载高清履历文件……';
 
     loadingPromise = fetch(DATA_URL, { credentials: 'same-origin', cache: 'force-cache' })
       .then(function (response) {
@@ -90,19 +90,19 @@
     card.className = 'career-document-card';
     card.id = 'careerResumeDocument';
     card.innerHTML = [
-      '<small>ORIGINAL PDF / PASSWORD PROTECTED</small>',
+      '<small>ORIGINAL PDF / READY TO VIEW</small>',
       '<h3>个人履历高清原版</h3>',
-      '<p>附件为三页 A4 高清原版 PDF，完整保留原始版面与清晰度。预览和下载文件本体均已加密保护。</p>',
-      '<div class="career-document-meta"><span>3 页 A4</span><span>高清原版</span><span>AES-256 加密</span><span>同履历主线密码</span></div>',
+      '<p>附件为三页 A4 高清原版 PDF，完整保留原始版面与清晰度。进入履历主线后可直接在线预览或下载。</p>',
+      '<div class="career-document-meta"><span>3 页 A4</span><span>高清原版</span><span>在线预览</span><span>支持下载</span></div>',
       '<div class="career-document-actions">',
       '<button type="button" data-resume-action="preview">预览高清原版</button>',
-      '<button class="secondary" type="button" data-resume-action="download">下载加密 PDF</button>',
+      '<button class="secondary" type="button" data-resume-action="download">下载 PDF</button>',
       '</div>',
       '<p class="career-document-status" role="status" aria-live="polite"></p>',
       '<div class="career-document-preview" hidden>',
       '<iframe title="丁启利个人履历高清原版 PDF 预览"></iframe>',
       '</div>',
-      '<p class="career-document-note">安全提示：打开预览或下载后的 PDF 时，请输入“履历主线”同一密码。文件本体受密码保护，直接访问文件也无法免密查看。</p>'
+      '<p class="career-document-note">访问说明：仅进入“履历主线”时需要密码；进入后在线预览与下载的 PDF 均无需再次输入密码。</p>'
     ].join('');
     chain.insertAdjacentElement('afterend', card);
 
@@ -120,7 +120,7 @@
         if (action === 'preview') {
           if (!iframe.src) iframe.src = url + '#view=FitH&toolbar=1&navpanes=0';
           previewBox.hidden = false;
-          status.textContent = '高清预览已打开，请在预览窗口输入履历主线同一密码。';
+          status.textContent = '高清预览已打开，可直接浏览完整原版。';
           previewBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;
         }
@@ -131,7 +131,7 @@
         document.body.appendChild(link);
         link.click();
         link.remove();
-        status.textContent = '加密 PDF 已开始下载，打开文件时请输入履历主线同一密码。';
+        status.textContent = 'PDF 已开始下载，下载后可直接打开查看。';
       }).catch(function () {});
     });
   }
