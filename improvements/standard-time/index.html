@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>标准工时不是考核工具，而是制造运营数据底座｜QilyLean 改善经验</title>
+  <meta name="description" content="说明标准工时如何支撑标准产能、UPPH、PMC排程、ERP/MES基础数据和经营改善分析。">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://qilylean.com/improvements/standard-time/">
+  <link rel="stylesheet" href="/site-shell.css?v=20260722-modules-v4">
+  <style>
+    :root{--ink:#182420;--muted:#5f7474;--line:#d5e4e3;--paper:#f3faf9;--white:#fff;--forest:#0f4b5a;--teal:#178b94;--copper:#caa15f;--plum:#6e3f5f;--shadow:0 20px 55px rgba(15,75,90,.16)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);font-size:16.5px;line-height:1.72}a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px clamp(18px,4vw,56px);background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}.brand{display:flex;align-items:center;gap:10px;color:var(--forest);font-weight:850}.brand-mark{display:none}.nav{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:14px}.nav a{text-decoration:none}.nav a:hover{color:var(--teal)}
+    .hero{padding:clamp(42px,6vw,78px) clamp(18px,4vw,68px);color:#fff;background:linear-gradient(120deg,rgba(14,76,91,.98),rgba(25,123,130,.94) 54%,rgba(43,103,118,.96)),radial-gradient(circle at 82% 12%,rgba(210,236,230,.34),transparent 34%)}.hero-inner{width:min(1180px,100%);margin:auto}.eyebrow{color:#ffe8ad;font-size:14px;font-weight:850}.hero h1{margin:10px 0 14px;font-size:clamp(36px,4.8vw,66px);line-height:1.05}.lead{max-width:960px;color:#fff3df;font-size:clamp(18px,1.5vw,22px)}
+    .section{padding:clamp(42px,6vw,76px) clamp(18px,4vw,56px);background:#fff;border-bottom:1px solid var(--line)}.section.alt{background:#eef5f2}.section-inner{width:min(1180px,100%);margin:auto}.section-head{max-width:920px;margin-bottom:24px}.section h2{margin:0 0 10px;color:var(--forest);font-size:clamp(27px,3vw,42px);line-height:1.18}.section-head p{margin:0;color:var(--muted)}
+    .paper-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.paper-card{display:flex;flex-direction:column;min-height:260px;padding:20px;border:1px solid var(--line);background:#fff;border-top:4px solid var(--teal);box-shadow:var(--shadow)}.paper-card:nth-child(2n){border-top-color:var(--copper)}.paper-card:nth-child(3n){border-top-color:var(--plum)}.paper-card small{color:var(--copper);font-weight:850}.paper-card h3{margin:8px 0 10px;color:var(--forest);font-size:19px;line-height:1.36}.paper-card p{margin:0 0 16px;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}.tag{display:inline-flex;padding:4px 9px;border:1px solid var(--line);background:#f7fbf7;color:#46615f;font-size:13px}.button,.share-button{display:inline-flex;align-items:center;justify-content:center;width:max-content;min-height:40px;margin-top:16px;padding:8px 15px;border:1px solid rgba(23,139,148,.35);border-radius:999px;color:#fff;background:var(--forest);text-decoration:none;font-weight:850;font:inherit;cursor:pointer}.button:hover,.share-button:hover{background:var(--teal)}
+    .article{padding:34px 0;border-top:1px solid var(--line)}.article:first-child{border-top:0}.article[id]{scroll-margin-top:96px}.article h2{color:var(--forest);font-size:clamp(26px,3vw,40px)}.subtitle{margin:-4px 0 14px;color:var(--teal);font-weight:850}.meta{margin-bottom:14px;color:var(--muted);font-size:14px}.share-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 22px}.share-row .share-button{margin-top:0;color:#17443b;background:#ffe39b;border-color:#f5c861}.share-row .share-button:hover{background:#f5c861}.share-status{color:var(--teal);font-size:14px;font-weight:800}.article h3{margin:28px 0 9px;color:#17443b;font-size:22px}.article p{margin:0 0 13px;color:#344845}.toc{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}.toc a{padding:7px 11px;border:1px solid rgba(255,232,173,.5);color:#fff8ea;background:rgba(255,255,255,.08);text-decoration:none;font-size:14px;font-weight:800}.footer{padding:24px clamp(18px,4vw,56px);color:#d6e5df;background:#101916}.footer-inner{width:min(1180px,100%);margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    @media(max-width:980px){.paper-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{align-items:flex-start;flex-direction:column}}@media(max-width:700px){.paper-grid{grid-template-columns:1fr}.button,.share-button{width:100%}.hero{padding-top:34px}.topbar{position:static}.share-row{align-items:stretch;flex-direction:column}.share-status{min-height:20px}}
+  
+    .article-hub{padding:30px clamp(18px,4vw,56px);color:#fff;background:linear-gradient(120deg,rgba(14,76,91,.98),rgba(25,123,130,.94) 54%,rgba(43,103,118,.96))}
+    .article-hub-inner{width:min(1180px,100%);margin:auto}
+    .article-hub .hub-back{display:inline-flex;margin-bottom:8px;color:#ffe8ad;text-decoration:none;font-size:14px;font-weight:850}
+    .article-hub h1{margin:2px 0 8px;font-size:clamp(30px,3.6vw,48px);line-height:1.12}
+    .article-hub .hub-lead{margin:0;color:#fff3df;font-size:clamp(17px,1.35vw,20px)}
+    .article-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+    .article-links a{display:inline-flex;align-items:center;min-height:38px;padding:7px 11px;border:1px solid rgba(255,232,173,.5);color:#fff8ea;background:rgba(255,255,255,.08);text-decoration:none;font-size:14px;font-weight:800;transition:transform .16s ease,background-color .16s ease,color .16s ease}
+    .article-links a:hover,.article-links a:focus-visible,.article-links a[aria-current="page"]{color:#17322d;background:#ffe39b;outline:none;transform:translateY(-1px)}
+    .article-page-content .article{padding-top:0}
+    @media(max-width:700px){.article-links{display:grid;grid-template-columns:1fr 1fr}.article-links a{justify-content:center;text-align:center}.article-hub{padding-top:24px}}
+
+  </style>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span>制造改善与项目实践主页</span></a><nav class="nav" aria-label="网站导航"><a href="/">首页</a><a href="/capabilities/">能力画像</a><a href="/experience/">履历主线</a><a href="/projects/">代表项目</a><a href="/improvements/" aria-current="page">改善经验</a><a href="/ai.html">QilyLean AI</a><a href="/knowledge/">知识分享</a><a href="/moments.html">行走印记</a></nav></header>
+  <main>
+    <section class="article-hub">
+      <div class="article-hub-inner">
+        <a class="hub-back" href="/improvements/">← 返回改善经验清单</a>
+        <h1>改善经验</h1>
+        <p class="hub-lead">标准工时不是考核工具，而是制造运营数据底座</p>
+        <nav class="article-links" aria-label="改善经验六大模块"><a href="/improvements/vsm/">01 VSM价值流</a><a href="/improvements/standard-time/" aria-current="page">02 标准工时</a><a href="/improvements/smed/">03 SMED换模</a><a href="/improvements/erp-mes/">04 ERP/MES协同</a><a href="/improvements/ie-data/">05 IE数据底座</a><a href="/improvements/visual/">06 目视化语言</a></nav>
+      </div>
+    </section>
+    <section class="section article-page-content">
+      <div class="section-inner">
+        <article class="article" id="standard-time"><h2>标准工时不是考核工具，而是制造运营数据底座</h2><div class="subtitle">从IE基础数据到PMC排程、ERP协同与经营改善</div><div class="meta">撰写：丁启利｜栏目：制造改善实践</div><div class="share-row"><button class="share-button" data-title="标准工时不是考核工具，而是制造运营数据底座" data-target="standard-time">转发本文</button><span class="share-status" aria-live="polite"></span></div><h3>一、误区：把标准工时直接用于考核，会破坏数据真实性</h3><p>标准工时最常见的失败原因，是企业在基础数据尚未稳定时，就把它直接绑定到个人产量考核、奖金扣罚或产线排名。这样做会带来三个后果：现场倾向于隐藏真实问题，工时采集受到人为干扰，改善项目被理解为“压榨效率”。</p><p>在制造运营中，标准工时的第一价值不是惩罚，而是建立共同尺度。没有标准工时，企业很难判断订单需要多少人、产线是否满负荷、瓶颈在哪里、排产是否可执行、报价是否合理、改善是否有效。标准工时是制造管理的基础语言，而不是单纯的考核尺子。</p><h3>二、标准工时的五类用途：从现场到经营的共同数据底座</h3><p>第一，用于产能测算。标准工时可以转化为标准产能、UPPH、日产能和班产能力，为PMC排程提供依据。第二，用于人机配置。通过工位负荷率和节拍分析，判断人员配置是否合理。第三，用于线平衡改善。通过各工位工时差异识别瓶颈和等待。</p><p>第四，用于ERP/MES基础数据。工艺路线、标准工时、BOM、工序、资源和产能数据是系统有效运行的基础。第五，用于经营改善分析。标准工时可以支持人工成本核算、报价评估、改善收益核算和异常产能分析。只有当这些用途逐步发挥作用，标准工时才会被组织真正接受。</p><h3>三、建立原则：先定义对象，再定义方法，最后定义用途</h3><p>标准工时建立前，应先明确对象边界。例如，是按产品、工序、工位、工艺路线还是工单建立？同一产品是否区分版本、颜色、包装方式、客户要求、检验方式？若对象边界不清，后续数据会变成一堆无法复用的记录。</p><p>方法上可结合秒表测时、连续观察、录像分析、历史实绩校核和工程评估。对于成熟量产产品，可以以现场实测为主；对于新品或小批量产品，可以先建立临时标准工时，待稳定生产后修订。标准工时应包含正常作业时间、必要辅助时间、宽放时间和异常排除边界，不能把等待、返工、缺料等管理损失混入标准作业时间。</p><h3>四、数据结构：标准工时表不能只是一列秒数</h3><p>一份可用于经营管理的标准工时表，至少应包含产品编码、产品名称、客户或系列、工序名称、工位名称、作业内容、人数、设备/工装、CT、标准工时、标准产能、测时日期、版本状态、数据来源和适用条件。若要与PMC和ERP协同，还应补充工位数、工位负荷率、工艺路线、班次、可用工时、良率假设等字段。</p><p>许多企业的工时表只有“产品名称+工时”两个字段，短期看可以应付汇报，长期看无法支撑排程、成本、改善和系统导入。标准工时不是一张表，而是一套数据逻辑。</p><h3>五、导入步骤：先试运行，再固化为系统规则</h3><p>标准工时导入建议分为四步。第一步，建立样板产品工时模型，选择代表性产品完成测时、复核和线平衡分析。第二步，扩展到重点产品族，形成80%以上主力产品的基础工时库。第三步，与PMC排程、ERP物料和生产实绩录入联动，验证数据可用性。第四步，建立版本管理和定期复核机制，确保工艺变更、设备变更和人员配置变化后及时更新。</p><p>在导入初期，应明确“标准工时短期内不作为一线KPI考核依据”。更合理的定位是试运行、问题暴露、基准测时、培训沟通和改善复盘。只有当数据稳定、现场认可、异常边界清楚后，才可以逐步用于经营分析和管理决策。</p><h3>六、与PMC和ERP协同：标准工时决定计划是否接地气</h3><p>PMC排程如果没有可靠工时，只能凭经验排产。经验排产在订单少、产品稳定时尚可运行，一旦多品种、小批量、插单频繁，问题就会集中暴露：计划排得满，现场做不完；物料齐了，人员不足；订单交期紧，但瓶颈工序被忽略。</p><p>ERP系统同样如此。系统上线不是把线下流程搬进电脑，而是要求基础数据具备结构化、标准化和可维护性。标准工时、工艺路线、BOM、库存、产能和实绩之间若不能形成闭环，系统只会放大原有管理问题。</p><h3>七、结论：先把标准工时做成数据底座，再谈考核应用</h3><p>标准工时的本质，是制造运营管理的底层数据。它连接现场作业、产能模型、计划排程、ERP系统、成本核算和改善评价。若一开始就把它当成考核工具，容易导致现场抵触和数据失真；若先把它作为数据底座建设，反而能为管理者和一线建立共同事实基础。</p><p>真正有效的标准工时体系，应当让现场知道“标准从哪里来”，让PMC知道“产能怎么算”，让工程知道“改善怎么评估”，让管理层知道“经营数据是否可信”。</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="footer-inner"><span>丁启利 | 制造改善实践论文、精益生产、IE标准工时、数智化工厂规划</span><span><a href="/">返回主页</a></span></div></footer>
+  <script>
+    const shareButtons = Array.from(document.querySelectorAll('.share-button'));
+    const pagePath = window.location.origin + window.location.pathname;
+    async function copyToClipboard(text) { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return; } const textarea = document.createElement('textarea'); textarea.value = text; textarea.setAttribute('readonly', ''); textarea.style.position = 'fixed'; textarea.style.left = '-9999px'; document.body.appendChild(textarea); textarea.select(); document.execCommand('copy'); document.body.removeChild(textarea); }
+    shareButtons.forEach((button) => { button.addEventListener('click', async () => { const title = button.dataset.title || document.title; const target = button.dataset.target || ''; const url = `${pagePath}#${target}`; const status = button.parentElement.querySelector('.share-status'); const shareText = `${title}\n${url}`; try { if (navigator.share) { await navigator.share({ title, text: title, url }); if (status) status.textContent = '已调起系统转发'; } else { await copyToClipboard(shareText); if (status) status.textContent = '链接已复制，可粘贴转发'; } } catch (error) { await copyToClipboard(shareText); if (status) status.textContent = '链接已复制，可粘贴转发'; } window.setTimeout(() => { if (status) status.textContent = ''; }, 3600); }); });
+  </script>
+  <script src="/qilylean/floating-service.js?v=20260721-home-nav-fix-v1"></script>
+  <script src="/site-navigation.js?v=20260722-modules-v4"></script>
+  <script src="/homepage-music.js?v=20260722-continuous-v3"></script>
+
+  <script id="articleHashOffsetFix">
+  (function(){
+    function alignArticleHash(){
+      if(!location.hash)return;
+      var id=location.hash.slice(1);
+      try{id=decodeURIComponent(id);}catch(error){}
+      var target=document.getElementById(id);
+      if(!target)return;
+      var header=document.querySelector('.topbar');
+      var offset=(header?header.getBoundingClientRect().height:0)+24;
+      var top=target.getBoundingClientRect().top+window.scrollY-offset;
+      window.scrollTo({top:Math.max(0,top),left:0,behavior:'auto'});
+    }
+    window.addEventListener('hashchange',function(){requestAnimationFrame(alignArticleHash);});
+    window.addEventListener('load',function(){requestAnimationFrame(alignArticleHash);setTimeout(alignArticleHash,180);});
+    requestAnimationFrame(alignArticleHash);
+    setTimeout(alignArticleHash,420);
+  })();
+  </script>
+</body>
+</html>
