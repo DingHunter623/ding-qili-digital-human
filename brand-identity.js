@@ -42,7 +42,7 @@
     if (document.title !== TITLE) document.title = TITLE;
     setMeta('name', 'description', DESCRIPTION);
     setMeta('property', 'og:title', TITLE);
-    setMeta('property', 'og:description', '启精益之智，聚企业之力。' + SLOGAN + '。');
+    setMeta('property', 'og:description', '“启精益之智，聚企业之力。”' + SLOGAN + '。');
     setMeta('name', 'twitter:title', TITLE);
     setMeta('name', 'twitter:description', DESCRIPTION);
   }
@@ -69,13 +69,13 @@
     setText(document.querySelector('.hero h1'), BRAND);
     setText(
       document.querySelector('.hero .lead'),
-      '启精益之智，聚企业之力。' + BRAND_PLAIN + '是由丁启利发起的制造改善与精益赋能窗口，依托20年制造业工程技术、精益改善与咨询交付经验，聚焦PQCD改善、数智化工厂落地、目视化项目交付与精益体系建设。' + SLOGAN + '。'
+      '“启精益之智，聚企业之力。”' + BRAND_PLAIN + '是由丁启利发起的制造改善与精益赋能窗口，依托20年制造业工程技术、精益改善与咨询交付经验，聚焦PQCD改善、数智化工厂规划、目视化项目交付与精益体系建设。' + SLOGAN + '。'
     );
     setText(document.querySelector('.assistant-panel .panel-head'), '启力精益 AI 能力问答');
 
     var footerItems = document.querySelectorAll('.footer .footer-inner span');
     if (footerItems[0]) setText(footerItems[0], BRAND + ' · 丁启利');
-    if (footerItems[1]) setText(footerItems[1], SLOGAN);
+    if (footerItems[1]) setText(footerItems[1], SLOGAN + '。');
   }
 
   function applySharePanel() {
@@ -103,7 +103,7 @@
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    navigator.share({ title: TITLE, text: '启精益之智，聚企业之力。' + SLOGAN + '。', url: HOME_URL }).catch(function () {});
+    navigator.share({ title: TITLE, text: '“启精益之智，聚企业之力。”' + SLOGAN + '。', url: HOME_URL }).catch(function () {});
   }, true);
 
   function boot() {
