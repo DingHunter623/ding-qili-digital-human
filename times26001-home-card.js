@@ -35,6 +35,7 @@ function addStyles(){
     '.times26001-feature-list li:before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:#ef4e47}',
     '.times26001-home-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}',
     '.times26001-home-actions a,.times26001-home-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 17px;border:1px solid #0f4b5a;border-radius:999px;color:#fff;background:#0f4b5a;font:inherit;font-size:16px;font-weight:900;text-decoration:none;cursor:pointer}',
+    '.times26001-home-actions .download{border-color:#ef4e47;background:linear-gradient(135deg,#ef4e47,#c93836);box-shadow:0 9px 22px rgba(113,30,31,.16)}',
     '.times26001-home-actions .secondary{color:#0f4b5a;background:#fff}',
     '.times26001-home-status{align-self:center;color:#1f714f;font-size:15px;font-weight:900}',
     '.times26001-hero-link{border-color:#ef817b!important;background:rgba(239,78,71,.18)!important}',
@@ -62,12 +63,12 @@ function addSection(){
   var section=document.createElement('section');
   section.id='times26001HomeSection';
   section.className='times26001-home-section';
-  section.innerHTML='<div class="times26001-home-inner"><div class="times26001-home-head"><h2>数字化工具作品</h2><p>将工业工程测时需求与日常时间管理结合，形成可直接使用、可持续迭代的移动端工具。</p></div><article class="times26001-home-card"><figure class="times26001-home-visual"><a href="/tools/times26001/" aria-label="查看Times26001应用介绍"><img src="/assets/tools/times26001-overview.svg?v=20260724-times26001-v1" alt="Times26001思大时间管理APP功能概览" width="1200" height="720" loading="lazy" decoding="async"></a></figure><div class="times26001-home-content"><small>移动端APP｜时间管理＋IE现场测时</small><h3>Times26001｜思大时间管理</h3><p>把北京时间、万年历、闹钟提醒、秒表分段、总时长汇总、倒计时、黄历与节气信息整合在一个APP中。既适合日常时间规划，也可用于标准工时测量、工序分析和改善前后对比。</p><ul class="times26001-feature-list"><li>北京时间、阳历、农历、节气与节假日</li><li>一次性、工作日、周末及自定义提醒</li><li>秒表分段、总计汇总与文本复制</li><li>预设／自定义倒计时及离线通知</li><li>黄历宜忌、冲煞与传统时间信息</li><li>Android／iOS跨平台持续迭代</li></ul><div class="times26001-home-actions"><a href="/tools/times26001/">查看APP介绍</a><button class="secondary" type="button" data-copy-times26001>复制分享简介</button><span class="times26001-home-status" aria-live="polite"></span></div></div></article></div>';
+  section.innerHTML='<div class="times26001-home-inner"><div class="times26001-home-head"><h2>数字化工具作品</h2><p>将工业工程测时需求与日常时间管理结合，形成可直接使用、可持续迭代的移动端工具；Android v1.1.1现已开放官网下载。</p></div><article class="times26001-home-card"><figure class="times26001-home-visual"><a href="/tools/times26001/" aria-label="查看Times26001应用介绍"><img src="/assets/tools/times26001-overview.svg?v=20260724-times26001-v1" alt="Times26001思大时间管理APP功能概览" width="1200" height="720" loading="lazy" decoding="async"></a></figure><div class="times26001-home-content"><small>移动端APP｜时间管理＋IE现场测时</small><h3>Times26001｜思大时间管理</h3><p>把北京时间、万年历、闹钟提醒、秒表分段、总时长汇总、倒计时、黄历与节气信息整合在一个APP中。既适合日常时间规划，也可用于标准工时测量、工序分析和改善前后对比。</p><ul class="times26001-feature-list"><li>北京时间、阳历、农历、节气与节假日</li><li>一次性、工作日、周末及自定义提醒</li><li>秒表分段、总计汇总与文本复制</li><li>预设／自定义倒计时及离线通知</li><li>黄历宜忌、冲煞与传统时间信息</li><li>Android v1.1.1已开放直接下载</li></ul><div class="times26001-home-actions"><a class="download" href="/Times26001-Android-v1.1.1-IE-Stopwatch.apk" download>Android直接下载 v1.1.1</a><a class="secondary" href="/tools/times26001/">查看APP介绍</a><button class="secondary" type="button" data-copy-times26001>复制分享简介</button><span class="times26001-home-status" aria-live="polite"></span></div></div></article></div>';
   results.parentNode.insertBefore(section,results);
   var button=section.querySelector('[data-copy-times26001]');
   var status=section.querySelector('.times26001-home-status');
   button.addEventListener('click',function(){
-    var text='Times26001是一款兼顾日常时间管理与IE现场测时的移动端APP，集成北京时间、万年历、闹钟提醒、秒表分段、总时长汇总、倒计时、黄历与节气信息。分段记录支持复制，适合标准工时测量、工序分析和改善前后对比。\nhttps://qilylean.com/tools/times26001/';
+    var text='Times26001是一款兼顾日常时间管理与IE现场测时的移动端APP，集成北京时间、万年历、闹钟提醒、秒表分段、总时长汇总、倒计时、黄历与节气信息。分段记录支持复制，适合标准工时测量、工序分析和改善前后对比。Android v1.1.1现已开放官网直接下载。\nhttps://qilylean.com/tools/times26001/';
     copyText(text).then(function(){status.textContent='简介及网址已复制';setTimeout(function(){status.textContent='';},2200);});
   });
 }
