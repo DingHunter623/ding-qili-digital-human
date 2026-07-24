@@ -17,6 +17,27 @@
   var MODULE_ROUTES = ['/', '/ai.html', '/capabilities/', '/experience/', '/improvements/', '/knowledge/', '/moments.html'];
   var prefetchedDocuments = Object.create(null);
 
+  function enableProjectPresentation() {
+    if (!/^\/projects(?:\/|$)/.test(location.pathname || '')) return;
+    var version = '20260724-project-gallery-v1';
+    var stylesheet = document.querySelector('link[href*="/projects/project-pages.css"]');
+    if (stylesheet) stylesheet.href = '/projects/project-pages.css?v=' + version;
+    else {
+      stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = '/projects/project-pages.css?v=' + version;
+      document.head.appendChild(stylesheet);
+    }
+    if (!document.querySelector('script[src*="/projects/project-image-viewer.js"]')) {
+      var viewer = document.createElement('script');
+      viewer.id = 'qilyProjectImageViewerScript';
+      viewer.src = '/projects/project-image-viewer.js?v=' + version;
+      document.body.appendChild(viewer);
+    }
+  }
+
+  enableProjectPresentation();
+
   var style = document.createElement('style');
   style.id = 'siteMusicStyle';
   style.textContent =
