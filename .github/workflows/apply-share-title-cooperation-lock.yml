@@ -1,0 +1,57 @@
+name: Apply share title and cooperation lock
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/apply-share-title-cooperation-lock.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: share-title-cooperation-lock-main
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Apply targeted updates
+        run: node scripts/apply-share-title-cooperation-lock.js
+
+      - name: Validate requested behavior
+        shell: bash
+        run: |
+          grep -q "var shareText = title + '\\\\n' + url;" site-navigation.js
+          grep -q "网页标题及网址已复制" site-navigation.js
+          grep -q "function protectCooperationPage" site-navigation.js
+          grep -q "cooperationUnlocked" site-navigation.js
+          grep -q "'259'" site-navigation.js
+          grep -q "noindex,nofollow,noarchive" cooperation/index.html
+          ! grep -q "https://qilylean.com/cooperation/" sitemap.xml
+          ! grep -q "'/cooperation/'" site-search.js
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Requested changes are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site-navigation.js site-search.js cooperation/index.html sitemap.xml
+          git commit -m "fix: share page title and protect project cooperation [skip ci]"
+          git push
