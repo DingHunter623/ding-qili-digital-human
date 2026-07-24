@@ -31,7 +31,7 @@ function applyFix(){
   var brand=panel.querySelector('.share-brand');
   if(brand)brand.textContent=BRAND;
   var title=panel.querySelector('h3');
-  if(title)title.textContent='分享启力精益官网';
+  if(title)title.textContent='分享“启力精益”官网';
 
   var urlEl=panel.querySelector('.share-url');
   if(urlEl)urlEl.textContent=HOME_URL;
@@ -49,7 +49,7 @@ function applyFix(){
   }
 
   var note=panel.querySelector('.share-note');
-  if(note)note.textContent='长按二维码可保存、转发或识别访问启力精益官网。';
+  if(note)note.textContent='扫码或复制官网地址访问 “QilyLean 启力精益”';
 
   if(urlEl&&!urlEl.dataset.homeUrlGuard){
     urlEl.dataset.homeUrlGuard='1';
