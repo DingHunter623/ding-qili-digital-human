@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "scripts/apply-share-title-cooperation-lock.js"
+      - ".github/workflows/apply-share-title-cooperation-lock.yml"
   workflow_dispatch:
 
 permissions:
