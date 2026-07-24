@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>全站术语词典｜中文诠释与应用场景｜QilyLean</title>
-<meta name="description" content="QilyLean全站制造管理与工程专业术语词典：159项英文、字母代码及标准编号的中文诠释与实际应用场景。">
+<meta name="description" content="QilyLean全站制造管理与工程专业术语词典：161项英文、字母代码及标准编号的中文诠释与实际应用场景。">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://qilylean.com/knowledge/terminology.html">
 <link rel="stylesheet" href="/site-shell.css?v=20260724-terminology-v2">
@@ -40,7 +40,7 @@
 <div class="term-toolbar">
 <label for="termSearch"><strong>快速查找术语</strong></label>
 <input class="term-search" id="termSearch" type="search" placeholder="输入英文、代码或中文，例如：VSM、标准工时、抽样检验" autocomplete="off">
-<div class="term-count" id="termCount">共收录 159 项术语</div>
+<div class="term-count" id="termCount">共收录 161 项术语</div>
 </div>
 <div class="term-empty" id="termEmpty">未找到对应术语，请尝试更短的代码或中文关键词。</div>
 </div></section>
@@ -197,7 +197,7 @@
   <div class="term-code">NPI</div>
   <div class="term-en">New Product Introduction</div>
   <h3>新产品导入</h3>
-  <p><strong>应用场景：</strong>用于从样件、试产到量产的跨部门协同，管控工艺、质量、产能、物料与交付风险。</p>
+  <p><strong>应用场景：</strong>用于从样件、EVT／DVT／PVT验证到MP转量产的跨部门协同，管控工艺、质量、产能、物料与交付风险。</p>
 </article>
 <article class="term-card" data-term-card>
   <div class="term-code">PMC</div>
@@ -252,6 +252,12 @@
   <div class="term-en">Project Management / Project Manager</div>
   <h3>项目管理／项目经理</h3>
   <p><strong>应用场景：</strong>用于统筹范围、进度、成本、质量、风险和跨部门交付；具体含义依组织岗位定义。</p>
+</article>
+<article class="term-card" data-term-card>
+  <div class="term-code">PMO</div>
+  <div class="term-en">Project Management Office</div>
+  <h3>项目管理办公室／项目管理组织</h3>
+  <p><strong>应用场景：</strong>用于建立组织级项目治理、方法标准、项目组合与资源协调、节点评审、风险升级和交付监督；PM负责具体项目，PMO负责统一规则与跨项目协同。</p>
 </article></div>
   </div>
 </section>
@@ -533,7 +539,13 @@
   <div class="term-code">PVT</div>
   <div class="term-en">Production Validation Test</div>
   <h3>生产验证测试</h3>
-  <p><strong>应用场景：</strong>用于试产阶段验证工艺、设备、治具、质量控制、产能和量产准备状态。</p>
+  <p><strong>应用场景：</strong>用于试产阶段验证工艺、设备、治具、质量控制、产能和量产准备状态，为MP转量产决策提供依据。</p>
+</article>
+<article class="term-card" data-term-card>
+  <div class="term-code">MP</div>
+  <div class="term-en">Mass Production</div>
+  <h3>转量产／量产阶段</h3>
+  <p><strong>应用场景：</strong>用于PVT及试产验证完成后，确认问题闭环和量产准入条件，正式转入受控的批量生产；重点核查文件、工艺、设备、治具、质量、产能、人员、物料与供应链准备状态。</p>
 </article>
 <article class="term-card" data-term-card>
   <div class="term-code">EBOM</div>
@@ -1063,13 +1075,13 @@
       card.hidden=!matched;
       if(matched)visible+=1;
     });
-    count.textContent=query?'找到 '+visible+' 项术语':'共收录 159 项术语';
+    count.textContent=query?'找到 '+visible+' 项术语':'共收录 161 项术语';
     empty.style.display=visible?'none':'block';
   }
   input.addEventListener('input',filter,{passive:true});
 })();
 </script>
-<script src="/site-navigation.js?v=20260724-logo-tricolor-v4"></script>
+<script src="/site-navigation.js?v=20260724-logo-red-dot-v5"></script>
 <script src="/homepage-music.js?v=20260722-continuous-v3"></script>
 </body>
 </html>
