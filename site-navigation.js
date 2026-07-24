@@ -6,7 +6,8 @@
 
   var HOME_URL = 'https://qilylean.com/';
   var HOME_QR_SRC = '/qilylean/qilylean-home-qr.svg?v=20260722-navigation-v4';
-  var SHARED_ASSET_VERSION = '20260723-site-search-v1';
+  var SHARED_ASSET_VERSION = '20260724-global-type-v1';
+  var VISUAL_SCALE_VERSION = '20260724-global-type-v1';
   var PHONE_NUMBERS = ['13450014003', '15168120722', '17681788259'];
   var routes = [
     ['首页', '/'],
@@ -55,6 +56,19 @@
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = '/site-shell.css?v=' + SHARED_ASSET_VERSION;
+    document.head.appendChild(link);
+  }
+
+  function addVisualScaleStylesheet() {
+    var current = document.getElementById('qilyVisualScaleStylesheet');
+    if (current) {
+      current.href = '/site-visual-scale-v1.css?v=' + VISUAL_SCALE_VERSION;
+      return;
+    }
+    var link = document.createElement('link');
+    link.id = 'qilyVisualScaleStylesheet';
+    link.rel = 'stylesheet';
+    link.href = '/site-visual-scale-v1.css?v=' + VISUAL_SCALE_VERSION;
     document.head.appendChild(link);
   }
 
@@ -342,6 +356,7 @@
 
   function boot() {
     addStylesheet();
+    addVisualScaleStylesheet();
     buildNavigation();
     enableNavigationPrefetch();
     buildDock();
