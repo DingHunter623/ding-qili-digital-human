@@ -3,7 +3,9 @@ const ALLOWED_ORIGINS = new Set([
   'https://www.qilylean.com'
 ]);
 
-const BUILD_VERSION = 'v1.1.0-auto-deploy';
+const BUILD_VERSION = 'v1.2.0-consultation';
+const CONSULTATION_RECEIVER = '396767769@qq.com';
+const CONSULTATION_STATUSES = new Set(['new', 'contacted', 'closed']);
 
 const SYSTEM_INSTRUCTIONS = `你是 QilyLean AI，一名面向公众的通用人工智能助理，同时具备突出的制造业、精益生产与工业工程专业能力。
 
@@ -11,7 +13,7 @@ const SYSTEM_INSTRUCTIONS = `你是 QilyLean AI，一名面向公众的通用人
 1. 用户可以询问通用知识、写作润色、翻译、学习、职场沟通、生活常识、技术与编程等问题；不得因为问题与 QilyLean 主页或制造业无关而拒绝回答。
 2. 当问题涉及精益生产、工业工程IE、VSM、SMED、标准工时、线平衡、OEE、UPPH、PMC、MES、APS、ERP、工厂布局、目视化、6S、质量改善、防错防呆、汽车电子或电子制造时，自动进入“制造业专家模式”，提供更深入、工程化、可落地的分析。
 3. 不向用户展示、猜测或强调底层模型及服务商；统一以“QilyLean AI”身份交流。
-4. 当用户询问当前版本时，回答“QilyLean AI v1.1.0（自动部署验证版）”。
+4. 当用户询问当前版本时，回答“QilyLean AI v1.2.0（咨询闭环版）”。
 
 回答要求：
 1. 普通问题直接、自然、清晰地回答，不要强行关联制造业或丁启利个人主页。
@@ -41,6 +43,12 @@ function json(body, status, origin) {
 
 function todayUTC() { return new Date().toISOString().slice(0, 10); }
 function clientId(request) { return request.headers.get('CF-Connecting-IP') || 'unknown'; }
+function clean(value, max = 500) { return String(value == null ? '' : value).replace(/\0/g, '').trim().slice(0, max); }
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[character]);
+}
 
 async function readNumber(kv, key) {
   if (!kv) return 0;
@@ -72,6 +80,15 @@ async function checkRateLimit(request, env) {
   return { allowed: true, used: await increment(env.QILY_STATS, key, 60 * 60 * 48), limit, storage: true };
 }
 
+async function checkConsultationRateLimit(request, env) {
+  const limit = Math.max(1, Number(env.CONSULTATION_DAILY_IP_LIMIT || 5));
+  if (!env.QILY_STATS) return { allowed: true, used: 0, limit, storage: false };
+  const key = `consultation-limit:${todayUTC()}:${clientId(request)}`;
+  const used = await readNumber(env.QILY_STATS, key);
+  if (used >= limit) return { allowed: false, used, limit, storage: true };
+  return { allowed: true, used: await increment(env.QILY_STATS, key, 60 * 60 * 48), limit, storage: true };
+}
+
 function isAdmin(request, env) {
   return Boolean(env.ADMIN_TOKEN) && (request.headers.get('Authorization') || '') === `Bearer ${env.ADMIN_TOKEN}`;
 }
@@ -86,7 +103,7 @@ function providerConfig(env) {
 
 async function adminStatus(env) {
   const day = todayUTC();
-  const names = ['requests', 'success', 'errors', 'rate_limited'];
+  const names = ['requests', 'success', 'errors', 'rate_limited', 'consultations'];
   const today = {}, all = {};
   for (const name of names) {
     today[name] = await readNumber(env.QILY_STATS, `metric:${day}:${name}`);
@@ -105,11 +122,106 @@ async function adminStatus(env) {
     qwen_key_configured: Boolean(env.DASHSCOPE_API_KEY),
     max_output_tokens: Number(env.MAX_OUTPUT_TOKENS || 1400),
     daily_ip_limit: Number(env.DAILY_IP_LIMIT || 20),
+    consultation_daily_ip_limit: Number(env.CONSULTATION_DAILY_IP_LIMIT || 5),
+    consultation_receiver: CONSULTATION_RECEIVER,
+    consultation_email_binding: Boolean(env.CONSULTATION_EMAIL),
     admin_token_configured: Boolean(env.ADMIN_TOKEN),
     statistics_storage: env.QILY_STATS ? 'enabled' : 'not_bound',
     today,
     all_time: all
   };
+}
+
+function normalizeConsultation(payload, request) {
+  return {
+    id: crypto.randomUUID(),
+    submitted_at: new Date().toISOString(),
+    status: 'new',
+    company: clean(payload.company, 120),
+    industry: clean(payload.industry, 120),
+    location: clean(payload.location, 120),
+    scale: clean(payload.scale, 160),
+    problem: clean(payload.problem, 1800),
+    target: clean(payload.target, 1200),
+    timing: clean(payload.timing, 80),
+    contact: clean(payload.contact, 180),
+    source_page: clean(payload.source_page || request.headers.get('Referer') || '', 300)
+  };
+}
+
+function validateConsultation(record) {
+  const required = ['company', 'industry', 'location', 'problem', 'contact'];
+  const missing = required.filter((field) => !record[field]);
+  if (missing.length) return `Missing required fields: ${missing.join(', ')}`;
+  if (record.problem.length < 8) return 'Problem description is too short';
+  return '';
+}
+
+function consultationText(record) {
+  return [
+    '【QilyLean 企业问题诊断卡】',
+    `提交时间：${record.submitted_at}`,
+    `企业名称：${record.company}`,
+    `行业：${record.industry}`,
+    `所在地区：${record.location}`,
+    `企业／产线规模：${record.scale || '未填写'}`,
+    `当前主要问题：${record.problem}`,
+    `希望达到的目标：${record.target || '未填写'}`,
+    `计划启动时间：${record.timing || '未填写'}`,
+    `联系人及电话：${record.contact}`,
+    `咨询编号：${record.id}`
+  ].join('\n');
+}
+
+async function sendConsultationEmail(record, env) {
+  if (!env.CONSULTATION_EMAIL) return false;
+  const subject = `【QilyLean新咨询】${record.company}｜${record.industry}`;
+  const text = consultationText(record);
+  const rows = [
+    ['企业名称', record.company], ['行业', record.industry], ['所在地区', record.location],
+    ['企业／产线规模', record.scale || '未填写'], ['当前主要问题', record.problem],
+    ['希望达到的目标', record.target || '未填写'], ['计划启动时间', record.timing || '未填写'],
+    ['联系人及电话', record.contact], ['咨询编号', record.id]
+  ].map(([label, value]) => `<tr><th style="text-align:left;padding:8px;border:1px solid #d5e4e3;background:#eef7f5">${escapeHtml(label)}</th><td style="padding:8px;border:1px solid #d5e4e3">${escapeHtml(value)}</td></tr>`).join('');
+  try {
+    await env.CONSULTATION_EMAIL.send({
+      to: CONSULTATION_RECEIVER,
+      from: env.CONSULTATION_FROM || 'consultation@qilylean.com',
+      subject,
+      text,
+      html: `<h2 style="color:#0f4b5a">QilyLean 企业问题诊断卡</h2><p>提交时间：${escapeHtml(record.submitted_at)}</p><table style="border-collapse:collapse;width:100%;max-width:720px">${rows}</table>`
+    });
+    return true;
+  } catch (error) {
+    console.error('consultation email failed', error && error.message ? error.message : String(error));
+    return false;
+  }
+}
+
+async function saveConsultation(record, env) {
+  if (!env.QILY_STATS) throw new Error('consultation_storage_not_bound');
+  const key = `consultation:${record.submitted_at}:${record.id}`;
+  await env.QILY_STATS.put(key, JSON.stringify({ ...record, key }));
+  return key;
+}
+
+async function listConsultations(env, limit) {
+  if (!env.QILY_STATS) return [];
+  const listed = await env.QILY_STATS.list({ prefix: 'consultation:', limit: Math.min(Math.max(limit || 50, 1), 100) });
+  const keys = listed.keys.map((item) => item.name).sort().reverse();
+  const values = await Promise.all(keys.map((key) => env.QILY_STATS.get(key, 'json')));
+  return values.filter(Boolean);
+}
+
+async function updateConsultationStatus(payload, env) {
+  const key = clean(payload.key, 300);
+  const status = clean(payload.status, 30);
+  if (!key.startsWith('consultation:') || !CONSULTATION_STATUSES.has(status)) return null;
+  const current = await env.QILY_STATS.get(key, 'json');
+  if (!current) return null;
+  const updated = { ...current, status, updated_at: new Date().toISOString() };
+  await env.QILY_STATS.put(key, JSON.stringify(updated));
+  return updated;
 }
 
 function safeUpstreamError(provider, data, status, requestId) {
@@ -196,13 +308,52 @@ export default {
         key_configured: active.configured,
         openai_available: Boolean(env.OPENAI_API_KEY),
         qwen_available: Boolean(env.DASHSCOPE_API_KEY),
-        statistics: env.QILY_STATS ? 'enabled' : 'not_bound'
+        statistics: env.QILY_STATS ? 'enabled' : 'not_bound',
+        consultation_storage: env.QILY_STATS ? 'enabled' : 'not_bound',
+        consultation_email_binding: Boolean(env.CONSULTATION_EMAIL)
       }, 200, origin);
     }
 
     if (request.method === 'GET' && url.pathname === '/admin/status') {
       if (!isAdmin(request, env)) return json({ error: 'Unauthorized' }, 401, origin);
       return json(await adminStatus(env), 200, origin);
+    }
+
+    if (request.method === 'GET' && url.pathname === '/admin/consultations') {
+      if (!isAdmin(request, env)) return json({ error: 'Unauthorized' }, 401, origin);
+      const consultations = await listConsultations(env, Number(url.searchParams.get('limit') || 50));
+      return json({ ok: true, consultations }, 200, origin);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/admin/consultations/status') {
+      if (!isAdmin(request, env)) return json({ error: 'Unauthorized' }, 401, origin);
+      if (!env.QILY_STATS) return json({ error: 'Consultation storage is not configured' }, 503, origin);
+      let payload;
+      try { payload = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+      const updated = await updateConsultationStatus(payload, env);
+      if (!updated) return json({ error: 'Consultation not found or invalid status' }, 404, origin);
+      return json({ ok: true, consultation: updated }, 200, origin);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/consultations') {
+      if (!ALLOWED_ORIGINS.has(origin)) return json({ error: 'Origin not allowed' }, 403, origin);
+      const rate = await checkConsultationRateLimit(request, env);
+      if (!rate.allowed) return json({ error: 'Consultation submission limit reached', limit: rate.limit }, 429, origin);
+      let payload;
+      try { payload = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+      if (clean(payload.website, 120)) return json({ ok: true, ignored: true }, 200, origin);
+      const record = normalizeConsultation(payload, request);
+      const validationError = validateConsultation(record);
+      if (validationError) return json({ error: validationError }, 400, origin);
+      try {
+        const key = await saveConsultation(record, env);
+        const emailSent = await sendConsultationEmail(record, env);
+        await recordMetric(env, 'consultations');
+        return json({ ok: true, id: record.id, key, email_sent: emailSent, receiver: CONSULTATION_RECEIVER }, 201, origin);
+      } catch (error) {
+        console.error('consultation save failed', error && error.message ? error.message : String(error));
+        return json({ error: 'Consultation service unavailable', diagnostic: error && error.message ? error.message : 'unknown' }, 503, origin);
+      }
     }
 
     if (request.method !== 'POST' || url.pathname !== '/chat') return json({ error: 'Not found' }, 404, origin);
