@@ -7,6 +7,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const projectRoot = path.join(root, 'projects');
 const version = '20260724-project-presentation-v3';
+// Triggered once to refresh every project page after the shared visual standard changes.
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
