@@ -1,0 +1,52 @@
+name: Add Cpk sample size guidance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/add-cpk-sample-size.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: add-cpk-sample-size-main
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Add Cpk sample-size guidance
+        run: node scripts/add-cpk-sample-size.js
+
+      - name: Validate content
+        shell: bash
+        run: |
+          grep -q "纯数学计算至少需要2个不同数值" knowledge/terminology.html
+          grep -q "初步评估宜至少取得约50个" knowledge/terminology.html
+          grep -q "正式过程能力研究建议不少于100个数据" knowledge/terminology.html
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Cpk guidance is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add knowledge/terminology.html
+          git commit -m "docs: add Cpk sample-size guidance [skip ci]"
+          git push
